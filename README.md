@@ -17,6 +17,8 @@ git clone https://github.com/raghadisraghad/ShutterStock.git
 cd ShutterStock
 ```
 
-## Configure the Backend [Another Project README](https://github.com/raghadisraghad/ShutterStock/tree/main/backend/README.md).
+## Configure the Backend 
+*[Backend README](https://github.com/raghadisraghad/ShutterStock/tree/main/backend/README.md).*
 
-## Configure the FrontEnd [Another Project README](https://github.com/raghadisraghad/ShutterStock/tree/main/frontend/README.md).
+## Configure the FrontEnd 
+*[FrontEnd README](https://github.com/raghadisraghad/ShutterStock/tree/main/frontend/README.md).*

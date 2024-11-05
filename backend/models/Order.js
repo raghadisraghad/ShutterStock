@@ -8,4 +8,4 @@ const ordersSchema = new mongoose.Schema({
     status: { type: String, required: true}
 });
 
-module.exports = mongoose.model('Tag', ordersSchema);
+module.exports = mongoose.model('Order', ordersSchema);

@@ -1,34 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Target = require('../models/User');
-const axios = require('axios');
-
-//CRUD
-router.get("/", async (req, res) => {
-    try {
-        const target = await Target.find({ role: '1' });
-        res.status(200).json(target);
-    } catch (err) {
-        res.status(500).json({
-        Error: err.message,
-        });
-    }
-});
-
-router.get("/:id", async (req, res) => {
-    try {
-        const {id} = req.params
-        const target = await Target.findById(id);
-        if (!target) {
-            return res.status(404).send({ error: 'Target Not Found!' });
-        }
-        res.status(200).json(target);
-    } catch (err) {
-        res.status(500).json({
-            message: err.message,
-        });
-    }
-});
 
 router.post("/", async (req, res) => {
     try {
@@ -72,8 +44,6 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
-// Other functions
+//
 
-
-
-module.exports = router;
+module.exports = router
