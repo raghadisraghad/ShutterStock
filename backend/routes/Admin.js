@@ -1,23 +1,13 @@
-const express = require('express');
+import express from 'express';
+import {create,readAll,readById,update,deleteC} from '../controllers/Admin.js';
+
 const router = express.Router();
-const User = require('../models/User');
 
 //CRUD
-router.post('/create', async (req, res) => {
-});
+router.post('/create', create);
+router.get('/readAll', readAll);
+router.get('/read/:id', readById);
+router.put('/update/:id', update);
+router.delete('/delete/:id', deleteC);
 
-router.post('/readAll', async (req, res) => {
-});
-
-router.post('/read/:id', async (req, res) => {
-});
-
-router.post('/update', async (req, res) => {
-});
-
-router.post('/delete/:id', async (req, res) => {
-});
-
-//
-
-module.exports = router;
+export default router;
