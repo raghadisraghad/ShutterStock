@@ -7,7 +7,7 @@ const generateToken = (res, userId) => {
 
     // create a json web token by adding the user's id and the secret key and expiration date of this token
     // which is 30 days from now in this case
-    const token = jwt.sign({ userId: userId, lastActivity }, process.env.SECRET_KEY, { expiresIn: expiration });
+    const token = jwt.sign({ userId: userId, lastActivity }, process.env.JWT_SECRET, { expiresIn: expiration });
 
   res.cookie('jwt', token, {
     httpOnly: true,

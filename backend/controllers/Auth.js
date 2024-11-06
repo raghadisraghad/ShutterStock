@@ -2,7 +2,6 @@ import bcrypt from 'bcryptjs';
 import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import generateToken from '../utils/jwt.js';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '../.env' });
@@ -37,16 +36,22 @@ const login = asyncHandler(asyncHandler(async (req, res) => {
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (isPasswordValid) {
     generateToken(res, user._id);
-    // const lastActivity = Math.floor(Date.now() / 1000);
-    // const expiration = lastActivity + (30 * 24 * 60 * 60);
-    // const token = jwt.sign({ userId: user._id, lastActivity }, process.env.SECRET_KEY, { expiresIn: expiration });
-    res.status(200).json({});
+    res.status(200).json({ message: 'Logged In successfully' });
   }else{
     return res.status(400).json({ message: "Incorrect Password!" });
   }
 }));
 
+const logoutUser = (req, res) => {
+  res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
+};
+
 export {
   register,
-  login
+  login,
+  logoutUser
 };
