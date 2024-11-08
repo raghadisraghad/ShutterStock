@@ -18,7 +18,8 @@ const userSchema = new mongoose.Schema({
     facebook: { type: String, default: null  },
     x: { type: String, default: null  },
     youtube: { type: String, default: null  },
-    website: { type: String, default: null  }
+    website: { type: String, default: null  },
+    status: { type: Boolean, default: true, required: true }
 });
 
 export default mongoose.model('User', userSchema);

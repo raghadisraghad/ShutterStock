@@ -16,7 +16,7 @@ import categoryRoute from './routes/Categories.js';
 import protect from './middleware/auth.js';
 import { notFound, errorHandler } from './middleware/error.js';
 
-dotenv.config({ path: '../.env' });
+dotenv.config({ path: './.env' });
 
 const app = express();
 
@@ -31,7 +31,10 @@ app.get('/', (req, res) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(cors({
+  origin: `${process.env.VITE_DOMAIN}${process.env.VITE_FRONTEND_PORT}`,
+  credentials: true,
+}));
 app.use('/api/auth', authRoute);
 app.use('/api/admin', protect, adminRoute);
 app.use('/api/client', protect, clientRoute);
@@ -46,6 +49,6 @@ app.use('/api/orders', protect, orderRoute);
 app.use(errorHandler);
 app.use(notFound);
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on ${process.env.DOMAIN}${process.env.PORT}`);
+app.listen(process.env.VITE_PORT, () => {
+  console.log(`Server is running on ${process.env.VITE_DOMAIN}${process.env.VITE_PORT}`);
 });

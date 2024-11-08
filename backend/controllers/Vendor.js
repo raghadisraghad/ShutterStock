@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Target from '../models/User.js';
 
+
 const add = asyncHandler(async (req, res) => {
     const target = new Target(req.body)
     await target.save()
