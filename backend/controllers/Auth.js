@@ -7,40 +7,62 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const register = asyncHandler(async (req, res) => {
-  const { role,firstName,lastName,username,email,password,tel,birthDate,avatar,
-    description,materials,instagram,linkedin,facebook,x,youtube,website } = req.body;// get the json
+  console.log("Request Body:", req.body); 
+  const {
+    role, firstName, lastName, username, email,
+    password, tel, birthDate, avatar, description,
+    materials, instagram, linkedin, facebook,
+    x, youtube, website, status
+  } = req.body;
 
-  // check if a user with the given username or email already exists
   const existingUser = await User.findOne({ $or: [{ username }, { email }] });
   if (existingUser) {
     return res.status(400).json({ message: "User Already Exists !" });
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10);// if user didn't exist hash the password
-
-  // save the new user with the given data and with a hashed password
-  const newUser = new User({ role,firstName,lastName,username,email,password: hashedPassword,tel,birthDate,avatar,
-    description,materials,instagram,linkedin,facebook,x,youtube,website });
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const newUser = new User({
+    role,
+    firstName,
+    lastName,
+    username,
+    email,
+    password: hashedPassword,
+    tel,
+    birthDate,
+    avatar,
+    description,
+    materials: Array.isArray(materials) ? materials : materials ? materials.split(', ') : [],
+    instagram,
+    linkedin,
+    facebook,
+    x,
+    youtube,
+    website,
+    status
+  });
   await newUser.save();
 
-  res.status(201).json({ message: "User Created Successfully" });// send verification message
+  res.status(201).json({ message: "User Created Successfully" });
 });
 
-const login = asyncHandler(asyncHandler(async (req, res) => {
-  const { username, password } = req.body;// get the username and password from the json
+const login = asyncHandler(async (req, res) => {
+  const { username, password } = req.body;
 
   const user = await User.findOne({ username });
-  if(!user){
+  if (!user) {
     return res.status(400).json({ message: "Incorrect UserName" });
   }
+
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (isPasswordValid) {
-    generateToken(res, user._id);
-    res.status(200).json({ message: 'Logged In successfully' });
-  }else{
+  if (isPasswordValid && user.status) {
+    const token = generateToken(res, user._id);
+    res.status(200).json({ message: 'Logged In successfully', user, token });
+  } else {
     return res.status(400).json({ message: "Incorrect Password!" });
   }
-}));
+
+});
 
 const logoutUser = (req, res) => {
   res.cookie('jwt', '', {

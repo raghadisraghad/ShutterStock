@@ -21,7 +21,8 @@ cd ShutterStock
 
 ```bash
 npm install express mongoose axios dotenv cors bcryptjs jsonwebtoken cookie-parser express-async-handler
-npm i -D nodemon
+npm i -D nodemon multer nodemailer
+
 ```
 *[Backend README](https://github.com/raghadisraghad/ShutterStock/tree/main/backend/README.md).*
 

@@ -9,8 +9,8 @@ const getAllProducts = asyncHandler(async (req, res) => {
 });
 
 const getProductByVendorId = asyncHandler(async (req, res) => {
-  const {vendorId} = req.params
-  const target = await Target.find({ type: 'product', vendor : vendorId });
+  const { vendorId } = req.params
+  const target = await Target.find({ type: 'product', vendor: vendorId });
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -18,8 +18,8 @@ const getProductByVendorId = asyncHandler(async (req, res) => {
 });
 
 const getServiceByVendorId = asyncHandler(async (req, res) => {
-  const {vendorId} = req.params
-  const target = await Target.find({ type: 'service', vendor : vendorId });
+  const { vendorId } = req.params
+  const target = await Target.find({ type: 'service', vendor: vendorId });
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -32,7 +32,7 @@ const getAllServices = asyncHandler(async (req, res) => {
 });
 
 const getById = asyncHandler(async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params
   const target = await Target.findById(id);
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
@@ -41,7 +41,7 @@ const getById = asyncHandler(async (req, res) => {
 });
 
 const getByTag = asyncHandler(async (req, res) => {
-  const {search} = req.params
+  const { search } = req.params
   const tag = await Tag.findOne({ name: search });
   if (!tag) {
     return res.status(404).send({ error: 'Tag Not Found!' });
@@ -54,8 +54,8 @@ const getByTag = asyncHandler(async (req, res) => {
 });
 
 const getProductByCategory = asyncHandler(async (req, res) => {
-  const {search} = req.params
-  const category = await Category.findOne({  type: 'product', name: search });
+  const { search } = req.params
+  const category = await Category.findOne({ type: 'product', name: search });
   if (!category) {
     return res.status(404).send({ error: 'Category Not Found!' });
   }
@@ -67,8 +67,8 @@ const getProductByCategory = asyncHandler(async (req, res) => {
 });
 
 const getServiceByCategory = asyncHandler(async (req, res) => {
-  const {search} = req.params
-  const category = await Category.findOne({  type: 'service', name: search });
+  const { search } = req.params
+  const category = await Category.findOne({ type: 'service', name: search });
   if (!category) {
     return res.status(404).send({ error: 'Category Not Found!' });
   }
@@ -82,25 +82,25 @@ const getServiceByCategory = asyncHandler(async (req, res) => {
 const add = asyncHandler(async (req, res) => {
   const target = new Target(req.body)
   await target.save()
-  res.status(200).json({message : "Operation Success "})
+  res.status(200).json({ message: "Operation Success " })
 });
 
 const update = asyncHandler(async (req, res) => {
-  const {id}= req.params
-  const target = await Target.findByIdAndUpdate(id,req.body,{new:true});
+  const { id } = req.params
+  const target = await Target.findByIdAndUpdate(id, req.body, { new: true });
   if (!target) {
-      return res.status(404).send({ error: 'Target Not Found!' });
+    return res.status(404).send({ error: 'Target Not Found!' });
   }
-  res.status(200).json({message: "Updated Successfully"})
+  res.status(200).json({ message: "Updated Successfully" })
 });
 
 const deleteC = asyncHandler(async (req, res) => {
-  const {id}= req.params
+  const { id } = req.params
   const target = await Target.findByIdAndDelete(id);
-  if(!target){
-    res.status(404).json({message:"Target Doesn't Exist !!!"})
+  if (!target) {
+    res.status(404).json({ message: "Target Doesn't Exist !!!" })
   }
-  res.status(200).json({message: "Target Deleted Successfully"})
+  res.status(200).json({ message: "Target Deleted Successfully" })
 });
 
 export {

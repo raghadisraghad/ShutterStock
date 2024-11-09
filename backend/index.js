@@ -15,6 +15,8 @@ import tagRoute from './routes/Tags.js';
 import categoryRoute from './routes/Categories.js';
 import protect from './middleware/auth.js';
 import { notFound, errorHandler } from './middleware/error.js';
+import upload from './middleware/image.js';
+import path from 'path';
 
 dotenv.config({ path: './.env' });
 
@@ -23,18 +25,19 @@ const app = express();
 // MongoDB Connection
 connectDB();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(cors({
+  origin: `${process.env.VITE_FRONTEND_URL}`,
+  credentials: true,
+}));
+
 // Basic route for the server
 app.get('/', (req, res) => {
   res.send('Welcome To ShutterStock!');
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(cors({
-  origin: `${process.env.VITE_DOMAIN}${process.env.VITE_FRONTEND_PORT}`,
-  credentials: true,
-}));
 app.use('/api/auth', authRoute);
 app.use('/api/admin', protect, adminRoute);
 app.use('/api/client', protect, clientRoute);
@@ -46,9 +49,19 @@ app.use('/api/tags', tagRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/orders', protect, orderRoute);
 
-app.use(errorHandler);
-app.use(notFound);
+app.post('/api/upload-avatar', upload.single('avatar'), (req, res) => {
+  if (req.file) {
+    const imageUrl = `/Pictures/${req.file.filename}`;
+    res.status(200).json({ imageUrl });
+  } else {
+    res.status(400).json({ message: 'No file uploaded' });
+  }
+});
+app.use('/Pictures', express.static(path.join(process.env.UPLOAD_DIRECTORY)));
 
-app.listen(process.env.VITE_PORT, () => {
-  console.log(`Server is running on ${process.env.VITE_DOMAIN}${process.env.VITE_PORT}`);
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running on ${process.env.VITE_ORIGIN}`);
 });

@@ -1,4 +1,5 @@
 import { apiSlice } from './apiSlice';
+import { setCredentials } from './authSlice'
 const URL = 'api/auth';
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -9,6 +10,13 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      async onQuerySuccess(response, { dispatch }) {
+        const user = response?.user;
+        const token = response?.token;
+        if (token) {
+          dispatch(setCredentials({ user, token }));
+        }
+      },
     }),
     logout: builder.mutation({
       query: () => ({
@@ -22,6 +30,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
+      onQuerySuccess(response) {
+        console.log(response);
+      },
+    }),
+    uploadAvatar: builder.mutation({
+      query: (formData) => ({
+        url: '/api/upload-avatar',
+        method: 'POST',
+        body: formData,
+      }),
     }),
   }),
 });
@@ -30,4 +48,5 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
+  useUploadAvatarMutation,
 } = authApiSlice;

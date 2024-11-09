@@ -7,19 +7,19 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    tel: { type: Number },
+    tel: { type: String, default: null, required: true },
     dateCreated: { type: Date, default: Date.now },
-    birthDate: { type: Date, required: true},
-    avatar: { type: Buffer },
-    description: { type: String , default: null },
+    birthDate: { type: Date, required: true },
+    avatar: { type: String, default: null },
+    description: { type: String, default: null },
     materials: { type: [String], default: [] },
     instagram: { type: String, default: null },
-    linkedin: { type: String, default: null  },
-    facebook: { type: String, default: null  },
-    x: { type: String, default: null  },
-    youtube: { type: String, default: null  },
-    website: { type: String, default: null  },
-    status: { type: Boolean, default: true, required: true }
+    linkedin: { type: String, default: null },
+    facebook: { type: String, default: null },
+    x: { type: String, default: null },
+    youtube: { type: String, default: null },
+    website: { type: String, default: null },
+    status: { type: Boolean, default: false, required: true }
 });
 
 export default mongoose.model('User', userSchema);

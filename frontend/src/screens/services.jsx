@@ -2,7 +2,7 @@ import React from 'react';
 
 const services = () => {
   return (
-  <h1>services</h1>
+    <h1>services</h1>
   );
 };
 

@@ -4,9 +4,10 @@ import FormContainer from '../components/FormContainer';
 import Loader from '../components/Loader';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRegisterMutation } from '../slices/authApiSlice';
+import { useRegisterMutation, useUploadAvatarMutation } from '../slices/authApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import { toast } from 'react-toastify';
+import PasswordValidator from '../components/PasswordValidator';
 
 const RegisterScreen = () => {
   const [role, setRole] = useState('1');
@@ -19,6 +20,7 @@ const RegisterScreen = () => {
   const [tel, setTel] = useState('');
   const [birthDate, setBirthDate] = useState('');
   const [avatar, setAvatar] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [description, setDescription] = useState('');
   const [materials, setMaterials] = useState('');
   const [instagram, setInstagram] = useState('');
@@ -32,6 +34,7 @@ const RegisterScreen = () => {
   const navigate = useNavigate();
 
   const [register, { isLoading }] = useRegisterMutation();
+  const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
 
@@ -41,15 +44,43 @@ const RegisterScreen = () => {
     }
   }, [navigate, userInfo]);
 
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size > 20000000) {
+        toast.error("File size should be less than 20MB.");
+        return;
+      }
+      if (!["image/jpeg", "image/png"].includes(file.type)) {
+        toast.error("Please upload a valid image (JPEG/PNG).");
+        return;
+      }
+      setAvatar(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarUrl(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const status = role === '3' ? true : false;
+    const status = role === '3' ? false : true;
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
       try {
-        const res = await register({
+        let avatarImageUrl = '';
+        if (avatar) {
+          const avatarData = new FormData();
+          avatarData.append('avatar', avatar);
+          const avatarResponse = await uploadAvatar(avatarData).unwrap();
+          avatarImageUrl = avatarResponse.imageUrl;
+        }
+
+        const userData = {
           role,
           firstName,
           lastName,
@@ -58,20 +89,21 @@ const RegisterScreen = () => {
           password,
           tel,
           birthDate,
-          avatar,
+          avatar: avatarImageUrl,
           description,
-          materials: materials.split(', '),  // Store as an array
+          materials,
           instagram,
           linkedin,
           facebook,
           x,
           youtube,
           website,
-          status,
-        }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate('/');
+          status
+        };
+        const res = await register(userData).unwrap();
+        navigate('/login');
       } catch (err) {
+        console.error('Error during registration:', err);
         toast.error(err?.data?.message || err.error);
       }
     }
@@ -112,7 +144,7 @@ const RegisterScreen = () => {
 
         <Form.Group className='my-2' controlId='password'>
           <Form.Label>Password</Form.Label>
-          <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <PasswordValidator password={password} setPassword={setPassword} required />
         </Form.Group>
 
         <Form.Group className='my-2' controlId='confirmPassword'>
@@ -132,7 +164,8 @@ const RegisterScreen = () => {
 
         <Form.Group className='my-2' controlId='avatar'>
           <Form.Label>Avatar</Form.Label>
-          <Form.Control type='file' onChange={(e) => setAvatar(e.target.files[0])} required />
+          <Form.Control type='file' onChange={handleAvatarChange} required />
+          {avatarUrl && <img src={avatarUrl} alt="Avatar preview" width="100" />}
         </Form.Group>
 
         {role === '2' || role === '3' ? (
@@ -179,25 +212,14 @@ const RegisterScreen = () => {
           </>
         ) : null}
 
-        {role === '3' && (
-          <Form.Group className='my-2' controlId='whatsapp'>
-            <Form.Label>Contact us on WhatsApp</Form.Label>
-            <a href="https://wa.me/your-whatsapp-number" target="_blank" rel="noopener noreferrer">
-              Click here to communicate more about creating your account
-            </a>
-          </Form.Group>
-        )}
-
-        <Button type='submit' variant='primary' className='mt-3'>
-          Register
+        <Button type='submit' variant='primary' disabled={isLoading || isUploading}>
+          {isLoading || isUploading ? <Loader /> : 'Register'}
         </Button>
-
-        {isLoading && <Loader />}
       </Form>
 
       <Row className='py-3'>
         <Col>
-          Already have an account? <Link to={`/login`}>Login</Link>
+          Have an account? <Link to='/login'>Login</Link>
         </Col>
       </Row>
     </FormContainer>

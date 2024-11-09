@@ -9,30 +9,30 @@ const getAll = asyncHandler(async (req, res) => {
         res.status(200).json(target);
     } catch (err) {
         res.status(500).json({
-        Error: err.message,
+            Error: err.message,
         });
     }
 });
 
 const getByUsername = asyncHandler(async (req, res) => {
     try {
-      const {username} = req.params
-      const target = await Target.find({ role: '2', username: username });
-      if (!target) {
-        return res.status(404).send({ error: 'Target Not Found!' });
-      }
-      res.status(200).json(target);
+        const { username } = req.params
+        const target = await Target.find({ role: '2', username: username });
+        if (!target) {
+            return res.status(404).send({ error: 'Target Not Found!' });
+        }
+        res.status(200).json(target);
     } catch (err) {
-      res.status(500).json({
-        message: err.message,
-      });
+        res.status(500).json({
+            message: err.message,
+        });
     }
 });
 
 const getById = asyncHandler(async (req, res) => {
     try {
-        const {id} = req.params
-        const target = await Target.find({ role: '2', _id: id});
+        const { id } = req.params
+        const target = await Target.find({ role: '2', _id: id });
         if (!target) {
             return res.status(404).send({ error: 'Target Not Found!' });
         }
