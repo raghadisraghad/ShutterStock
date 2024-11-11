@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import protect from './middleware/auth.js';
+import { notFound, errorHandler } from './middleware/error.js';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
 import authRoute from './routes/Auth.js';
@@ -13,10 +15,7 @@ import productRoute from './routes/Products.js';
 import orderRoute from './routes/Orders.js';
 import tagRoute from './routes/Tags.js';
 import categoryRoute from './routes/Categories.js';
-import protect from './middleware/auth.js';
-import { notFound, errorHandler } from './middleware/error.js';
-import upload from './middleware/image.js';
-import path from 'path';
+import pictureRoute from './routes/Picture.js';
 
 dotenv.config({ path: './.env' });
 
@@ -48,16 +47,7 @@ app.use('/api/products', productRoute);
 app.use('/api/tags', tagRoute);
 app.use('/api/categories', categoryRoute);
 app.use('/api/orders', protect, orderRoute);
-
-app.post('/api/upload-avatar', upload.single('avatar'), (req, res) => {
-  if (req.file) {
-    const imageUrl = `/Pictures/${req.file.filename}`;
-    res.status(200).json({ imageUrl });
-  } else {
-    res.status(400).json({ message: 'No file uploaded' });
-  }
-});
-app.use('/Pictures', express.static(path.join(process.env.UPLOAD_DIRECTORY)));
+app.use('/api/pictures', pictureRoute);
 
 app.use(notFound);
 app.use(errorHandler);

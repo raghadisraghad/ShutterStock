@@ -1,4 +1,3 @@
-import express from 'express';
 import asyncHandler from 'express-async-handler';
 import Target from '../models/User.js';
 

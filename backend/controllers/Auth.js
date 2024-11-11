@@ -7,7 +7,7 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const register = asyncHandler(async (req, res) => {
-  console.log("Request Body:", req.body); 
+  console.log("Request Body:", req.body);
   const {
     role, firstName, lastName, username, email,
     password, tel, birthDate, avatar, description,
@@ -55,11 +55,15 @@ const login = asyncHandler(async (req, res) => {
   }
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (isPasswordValid && user.status) {
-    const token = generateToken(res, user._id);
-    res.status(200).json({ message: 'Logged In successfully', user, token });
+  if (user.status) {
+    if (isPasswordValid) {
+      const token = generateToken(res, user._id);
+      res.status(200).json({ message: 'Logged In successfully', user, token });
+    } else {
+      return res.status(400).json({ message: "Incorrect Password!" });
+    }
   } else {
-    return res.status(400).json({ message: "Incorrect Password!" });
+    return res.status(400).json({ message: "Account Not Activated Yet!" });
   }
 
 });

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 const RoleRoute = ({ allowedRoles }) => {
   const { userInfo } = useSelector((state) => state.auth);
-  const role = userInfo?.user?.role;
+  const role = userInfo?.role;
 
   if (!role) {
     return <Navigate to="/" replace />;

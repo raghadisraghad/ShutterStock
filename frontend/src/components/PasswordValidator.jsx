@@ -1,8 +1,14 @@
 import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const PasswordValidator = ({ password, setPassword, showErrorMessage = true }) => {
     const [isValid, setIsValid] = useState(true);
     const [errorMessage, setErrorMessage] = useState('');
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setIsPasswordVisible(!isPasswordVisible);
+    };
 
     const validatePassword = (password) => {
         const minLength = 8;
@@ -31,8 +37,11 @@ const PasswordValidator = ({ password, setPassword, showErrorMessage = true }) =
 
     return (
         <div>
-            <input type='password' placeholder='Enter password' value={password} onChange={handleChange} required />
+            <input type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password' value={password} onChange={handleChange} className='input' required />
             {showErrorMessage && !isValid && <p style={{ color: 'red' }}>{errorMessage}</p>}
+            <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+                {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
         </div>
     );
 };

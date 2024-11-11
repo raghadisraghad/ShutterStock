@@ -5,10 +5,8 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: './.env' });
 
-// Get the current directory path from import.meta.url
-const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY);
+const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Pictures');
 
-// Ensure the directory exists
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
@@ -36,14 +34,14 @@ const fileFilter = (req, file, cb) => {
   if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype)) {
     return cb(new Error('Only JPEG and JPG and PNG images are allowed'), false);
   }
-  
+
   cb(null, true);
 };
 
 const upload = multer({
   storage,
   limits: {
-    fileSize: 20 * 1024 * 1024 
+    fileSize: 20 * 1024 * 1024
   },
   fileFilter
 });

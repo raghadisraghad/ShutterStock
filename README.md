@@ -21,7 +21,7 @@ cd ShutterStock
 
 ```bash
 npm install express mongoose axios dotenv cors bcryptjs jsonwebtoken cookie-parser express-async-handler
-npm i -D nodemon multer nodemailer
+npm i -D nodemon multer
 
 ```
 *[Backend README](https://github.com/raghadisraghad/ShutterStock/tree/main/backend/README.md).*
@@ -36,6 +36,9 @@ bcryptjs : for securing passwords
 jsonwebtoken : to be able to generate and verify json web tokens
 cookie-parser : to be able to create cookies and control them
 express-async-handler : to handle async inside functions and methods without using try and catch
+nodemon : allows auto saving the code modifications without stopping the backend server
+multer : for uploading images
+
 
 
 ## Configuration for the FrontEnd 

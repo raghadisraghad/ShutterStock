@@ -1,32 +1,47 @@
-import React from 'react'
+import React from 'react';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const ProfileButtons = () => {
   const navigate = useNavigate();
+  const { userInfo } = useSelector((state) => state.auth);
+  const role = userInfo?.role;
 
   const handleRedirect = (path) => {
     navigate(path);
   };
+
   return (
-    <div>
-      <Button variant="primary" onClick={() => handleRedirect('/profile/update')} className="m-2">
+    <div className="profile-buttons-container">
+
+      <Button onClick={() => handleRedirect('/update')} className="button-custom">
         Update Profile
       </Button>
-      <Button variant="secondary" onClick={() => handleRedirect('/profile/orders')} className="m-2">
+
+      <Button onClick={() => handleRedirect('/orders')} className="button-custom">
         Orders
       </Button>
-      <Button variant="success" onClick={() => handleRedirect('/profile/collections')} className="m-2">
-        Collections
-      </Button>
-      <Button variant="danger" onClick={() => handleRedirect('/profile/contact')} className="m-2">
-        Contact
-      </Button>
-      <Button variant="danger" onClick={() => handleRedirect('/profile/portfolio')} className="m-2">
-        Portfolio
-      </Button>
-    </div>
-  )
-}
 
-export default ProfileButtons
+      {role === '2' || role === '3' ? (
+        <>
+          <Button onClick={() => handleRedirect('/collections')} className="button-custom">
+            Collections
+          </Button>
+
+          <Button onClick={() => handleRedirect('/contact')} className="button-custom">
+            Contact
+          </Button>
+        </>
+      ) : null}
+
+      {role === '3' && (
+        <Button onClick={() => handleRedirect('/portfolio')} className="button-custom">
+          Portfolio
+        </Button>
+      )}
+    </div>
+  );
+};
+
+export default ProfileButtons;
