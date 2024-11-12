@@ -1,5 +1,5 @@
 import express from 'express';
-import upload from '../middleware/image.js';
+import { upload, productImageUpload } from '../middleware/image.js';
 import { getAll, getById, add, update, deleteC } from '../controllers/Client.js';
 
 const router = express.Router();

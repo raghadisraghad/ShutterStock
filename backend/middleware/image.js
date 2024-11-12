@@ -5,10 +5,15 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: './.env' });
 
-const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Pictures');
+const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Users');
+const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Products');
 
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
+}
+
+if (!fs.existsSync(uploadProductDirectory)) {
+  fs.mkdirSync(uploadProductDirectory, { recursive: true });
 }
 
 const storage = multer.diskStorage({
@@ -24,6 +29,26 @@ const storage = multer.diskStorage({
     //   fs.mkdirSync(userDirectory, { recursive: true });
     // }
     cb(null, uploadDirectory);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  }
+});
+
+const storage2 = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const userId = req.body.vendor;
+
+    if (!userId) {
+      return cb(new Error('User ID is required'), false);
+    }
+
+    const userDirectory = path.join(uploadProductDirectory, userId.toString());
+    if (!fs.existsSync(userDirectory)) {
+      fs.mkdirSync(userDirectory, { recursive: true });
+    }
+
+    cb(null, userDirectory);
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -46,4 +71,15 @@ const upload = multer({
   fileFilter
 });
 
-export default upload;
+const productImageUpload = multer({
+  storage2,
+  limits: {
+    fileSize: 20 * 1024 * 1024
+  },
+  fileFilter
+});
+
+export {
+  upload,
+  productImageUpload
+}

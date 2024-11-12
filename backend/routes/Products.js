@@ -11,8 +11,8 @@ router.get("/:id", getById);
 router.get("/product/tag/:search", getByTag);
 router.get("/product/category/:search", getProductByCategory);
 router.get("/service/category/:search", getServiceByCategory);
-// router.post("/", add);
-// router.put("/:id", update);
-// router.delete("/:id", deleteC);
+router.post("/", add);
+router.put("/:id", update);
+router.delete("/:id", deleteC);
 
 export default router;

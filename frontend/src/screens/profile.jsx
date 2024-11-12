@@ -52,7 +52,12 @@ const Profile = () => {
   const [deleteUser, { isLoading: isDeletingAccount }] = useDeleteUserMutation();
 
   const { userInfo, token } = useSelector((state) => state.auth);
-  const src = `http://localhost:3000/api/pictures/avatar/${avatar}`;
+  let fileName = '';
+  if (avatar instanceof File)
+    fileName = avatar;
+  else
+    fileName = avatar.substring(avatar.lastIndexOf('\\') + 1);
+  const src = `http://localhost:3000/api/pictures/avatar/${fileName}`;
 
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
@@ -149,6 +154,7 @@ const Profile = () => {
       if (avatar instanceof File) {
         const avatarFormData = new FormData();
         avatarFormData.append('avatar', avatar);
+        avatarFormData.append('userId', userInfo._id);
         const uploadResponse = await uploadAvatar(avatarFormData).unwrap();
         avatarUrl = uploadResponse.imageUrl;
       }
@@ -212,209 +218,211 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <>
+      <Button onClick={() => navigate('/profile')} className="button-custom"> Back </Button>
+      <div className="profile-container">
+        <div className="sidebar">
+          <h5>Settings</h5>
+          <Nav className="flex-column">
+            <Nav.Link onClick={() => setActiveSection('profile')} active={activeSection === 'profile'}>
+              Profile
+            </Nav.Link>
+            <Nav.Link onClick={() => setActiveSection('password')} active={activeSection === 'password'}>
+              Password
+            </Nav.Link>
+            <Nav.Link onClick={handleDeleteAccount}>Delete Account</Nav.Link>
+          </Nav>
+          <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Confirm Account Deletion</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+              <Form>
+                <Form.Group controlId="deletePassword">
+                  <Form.Label>Enter your password to confirm:</Form.Label>
+                  <Form.Control type="password" placeholder="Enter your password" value={deletePassword} onChange={(e) => setDeletePassword(e.target.value)} />
+                </Form.Group>
+              </Form>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </Button>
+              <Button variant="danger" onClick={handleConfirmDelete} disabled={isDeleting} >
+                {isDeleting ? 'Deleting...' : 'Delete Account'}
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        </div>
 
-      <div className="sidebar">
-        <h5>Settings</h5>
-        <Nav className="flex-column">
-          <Nav.Link onClick={() => setActiveSection('profile')} active={activeSection === 'profile'}>
-            Profile
-          </Nav.Link>
-          <Nav.Link onClick={() => setActiveSection('password')} active={activeSection === 'password'}>
-            Password
-          </Nav.Link>
-          <Nav.Link onClick={handleDeleteAccount}>Delete Account</Nav.Link>
-        </Nav>
-        <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-          <Modal.Header closeButton>
-            <Modal.Title>Confirm Account Deletion</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-            <Form>
-              <Form.Group controlId="deletePassword">
-                <Form.Label>Enter your password to confirm:</Form.Label>
-                <Form.Control type="password" placeholder="Enter your password" value={deletePassword} onChange={(e) => setDeletePassword(e.target.value)} />
-              </Form.Group>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={handleConfirmDelete} disabled={isDeleting} >
-              {isDeleting ? 'Deleting...' : 'Delete Account'}
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+        <div className="form-content">
+          <div className="custom-form-container">
+            <FormContainer>
+              <div className='profileHeader'>
+                {avatar && typeof avatar === 'string' && activeSection === 'profile' ? (
+                  <img src={`${src}`} alt="User Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+                ) : avatar instanceof File ? (
+                  <img src={URL.createObjectURL(avatar)} alt="New Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
+                ) : activeSection === 'profile' && (
+                  <p>No Avatar</p>
+                )}
+                <h1>Update My {activeSection === 'profile' ? 'Profile' : 'Password'}</h1>
+              </div>
 
-      <div className="form-content">
-        <div className="custom-form-container">
-          <FormContainer>
-            <div className='profileHeader'>
-              {avatar && typeof avatar === 'string' && activeSection === 'profile' ? (
-                <img src={`${src}`} alt="User Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
-              ) : avatar instanceof File ? (
-                <img src={URL.createObjectURL(avatar)} alt="New Avatar" style={{ width: '100px', height: '100px', borderRadius: '50%' }} />
-              ) : activeSection === 'profile' && (
-                <p>No Avatar</p>
-              )}
-              <h1>Update My {activeSection === 'profile' ? 'Profile' : 'Password'}</h1>
-            </div>
+              <Form onSubmit={submitHandler}>
 
-            <Form onSubmit={submitHandler}>
+                {activeSection === 'profile' && (
+                  <>
 
-              {activeSection === 'profile' && (
-                <>
+                    <Form.Group className="my-2" controlId="avatar">
+                      <Form.Label>Upload Avatar</Form.Label>
+                      <Form.Control type="file" onChange={handleAvatarChange} />
+                    </Form.Group>
 
-                  <Form.Group className="my-2" controlId="avatar">
-                    <Form.Label>Upload Avatar</Form.Label>
-                    <Form.Control type="file" onChange={handleAvatarChange} />
-                  </Form.Group>
-
-                  <Row>
-                    <Col md={12}>
-                      <Form.Group controlId="firstName" className="my-2">
-                        <Form.Label>First Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter first name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                      </Form.Group>
-                    </Col>
-
-                    <Col md={12}>
-                      <Form.Group controlId="lastName" className="my-2">
-                        <Form.Label>Last Name</Form.Label>
-                        <Form.Control type="text" placeholder="Enter last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col md={12}>
-                      <Form.Group controlId="username" className="my-2">
-                        <Form.Label>Username</Form.Label>
-                        <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
-                      </Form.Group>
-                    </Col>
-
-                    <Col md={12}>
-                      <Form.Group controlId="email" className="my-2">
-                        <Form.Label>Email Address</Form.Label>
-                        <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col sm={4}>
-                      <Form.Group controlId="tel">
-                        <Form.Label>Telephone</Form.Label>
-                        <Form.Control type="text" value={tel} onChange={handleTelChange} placeholder="Enter your phone number" />
-                        {!telValidation && (
-                          <div className="error" style={{ color: 'red' }}>
-                            Please enter a valid Moroccan phone number.
-                          </div>
-                        )}
-                      </Form.Group>
-                    </Col>
-
-                    <Col sm={4}>
-                      <Form.Group controlId='birthDate' className="my-2" >
-                        <Form.Label>Birth Date</Form.Label>
-                        <DatePicker className='input' selected={birthDate} onChange={handleDateChange} maxDate={subYears(new Date(), 13)} minDate={subYears(new Date(), 80)} placeholderText="Select birth date" showYearDropdown dateFormat="dd/MM/yyyy" />
-                        {birthDateError && <div style={{ color: 'red', marginTop: '5px' }}>{birthDateError}</div>}
-                      </Form.Group>
-                    </Col>
-                  </Row>
-
-                  {role === '2' || role === '3' && (
-                    <>
-                      <Col sm={4}>
-                        <Form.Group className="my-2" controlId='description'>
-                          <Form.Label>Description</Form.Label>
-                          <Form.Control as='textarea' placeholder='Enter a description about yourself...' value={description}
-                            onChange={(e) => { if (e.target.value.length <= 300) { setDescription(e.target.value); } }} maxLength={300} />
-                          <div className="text-end mt-2"> <small>{description.length} / 300 characters</small> </div>
+                    <Row>
+                      <Col md={12}>
+                        <Form.Group controlId="firstName" className="my-2">
+                          <Form.Label>First Name</Form.Label>
+                          <Form.Control type="text" placeholder="Enter first name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                         </Form.Group>
                       </Col>
 
-                      <Form.Group className='my-2' controlId='materials'>
-                        <Form.Label>Materials</Form.Label>
-                        <Form.Control type='text' placeholder="Enter materials, separated by commas" value={materials} onChange={(e) => setMaterials(e.target.value)} />
-                      </Form.Group>
+                      <Col md={12}>
+                        <Form.Group controlId="lastName" className="my-2">
+                          <Form.Label>Last Name</Form.Label>
+                          <Form.Control type="text" placeholder="Enter last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                      <Form.Group className='my-2' controlId='instagram'>
-                        <Form.Label>Instagram</Form.Label>
-                        <Form.Control type='text' value={instagram} onChange={(e) => setInstagram(e.target.value)} />
-                      </Form.Group>
+                    <Row>
+                      <Col md={12}>
+                        <Form.Group controlId="username" className="my-2">
+                          <Form.Label>Username</Form.Label>
+                          <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                        </Form.Group>
+                      </Col>
 
-                      <Form.Group className='my-2' controlId='linkedin'>
-                        <Form.Label>Linkedin</Form.Label>
-                        <Form.Control type='text' value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
-                      </Form.Group>
+                      <Col md={12}>
+                        <Form.Group controlId="email" className="my-2">
+                          <Form.Label>Email Address</Form.Label>
+                          <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                      <Form.Group className='my-2' controlId='facebook'>
-                        <Form.Label>Facebook</Form.Label>
-                        <Form.Control type='text' value={facebook} onChange={(e) => setFacebook(e.target.value)} />
-                      </Form.Group>
+                    <Row>
+                      <Col sm={4}>
+                        <Form.Group controlId="tel">
+                          <Form.Label>Telephone</Form.Label>
+                          <Form.Control type="text" value={tel} onChange={handleTelChange} placeholder="Enter your phone number" />
+                          {!telValidation && (
+                            <div className="error" style={{ color: 'red' }}>
+                              Please enter a valid Moroccan phone number.
+                            </div>
+                          )}
+                        </Form.Group>
+                      </Col>
 
-                      <Form.Group className='my-2' controlId='x'>
-                        <Form.Label>X</Form.Label>
-                        <Form.Control type='text' value={x} onChange={(e) => setX(e.target.value)} />
-                      </Form.Group>
+                      <Col sm={4}>
+                        <Form.Group controlId='birthDate' className="my-2" >
+                          <Form.Label>Birth Date</Form.Label>
+                          <DatePicker className='input' selected={birthDate} onChange={handleDateChange} maxDate={subYears(new Date(), 13)} minDate={subYears(new Date(), 80)} placeholderText="Select birth date" showYearDropdown dateFormat="dd/MM/yyyy" />
+                          {birthDateError && <div style={{ color: 'red', marginTop: '5px' }}>{birthDateError}</div>}
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
-                      <Form.Group className='my-2' controlId='youtube'>
-                        <Form.Label>Youtube</Form.Label>
-                        <Form.Control type='text' value={youtube} onChange={(e) => setYoutube(e.target.value)} />
-                      </Form.Group>
+                    {role === '2' || role === '3' && (
+                      <>
+                        <Col sm={4}>
+                          <Form.Group className="my-2" controlId='description'>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control as='textarea' placeholder='Enter a description about yourself...' value={description}
+                              onChange={(e) => { if (e.target.value.length <= 300) { setDescription(e.target.value); } }} maxLength={300} />
+                            <div className="text-end mt-2"> <small>{description.length} / 300 characters</small> </div>
+                          </Form.Group>
+                        </Col>
 
-                      <Form.Group className='my-2' controlId='website'>
-                        <Form.Label>Website</Form.Label>
-                        <Form.Control type='text' value={website} onChange={(e) => setWebsite(e.target.value)} />
-                      </Form.Group>
-                    </>
-                  )}
+                        <Form.Group className='my-2' controlId='materials'>
+                          <Form.Label>Materials</Form.Label>
+                          <Form.Control type='text' placeholder="Enter materials, separated by commas" value={materials} onChange={(e) => setMaterials(e.target.value)} />
+                        </Form.Group>
 
-                </>
-              )}
+                        <Form.Group className='my-2' controlId='instagram'>
+                          <Form.Label>Instagram</Form.Label>
+                          <Form.Control type='text' value={instagram} onChange={(e) => setInstagram(e.target.value)} />
+                        </Form.Group>
 
-              {activeSection === 'password' && (
-                <>
-                  <Form.Group controlId="currentPassword" className="my-2">
-                    <Form.Label>Current Password</Form.Label>
-                    <Form.Control type={isPasswordVisible ? 'text' : 'password'} onChange={(e) => setCurrentPassword(e.target.value)} />
-                    <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
-                      {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-                    </span>
-                  </Form.Group>
+                        <Form.Group className='my-2' controlId='linkedin'>
+                          <Form.Label>Linkedin</Form.Label>
+                          <Form.Control type='text' value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
+                        </Form.Group>
 
-                  <Form.Group controlId="password" className="my-2">
-                    <Form.Label>New Password</Form.Label>
-                    <PasswordValidator password={newPassword} setPassword={setNewPassword} />
-                  </Form.Group>
+                        <Form.Group className='my-2' controlId='facebook'>
+                          <Form.Label>Facebook</Form.Label>
+                          <Form.Control type='text' value={facebook} onChange={(e) => setFacebook(e.target.value)} />
+                        </Form.Group>
 
-                  <Form.Group controlId="confirmPassword" className="my-2">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control type={isPasswordVisible2 ? 'text' : 'password'} placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-                    <span onClick={togglePasswordVisibility2} style={{ cursor: 'pointer' }}>
-                      {isPasswordVisible2 ? <FaEyeSlash /> : <FaEye />}
-                    </span>
-                  </Form.Group>
-                </>
-              )}
+                        <Form.Group className='my-2' controlId='x'>
+                          <Form.Label>X</Form.Label>
+                          <Form.Control type='text' value={x} onChange={(e) => setX(e.target.value)} />
+                        </Form.Group>
 
-              <Button type="submit" variant="primary" className="mt-3">
-                Update
-              </Button>
+                        <Form.Group className='my-2' controlId='youtube'>
+                          <Form.Label>Youtube</Form.Label>
+                          <Form.Control type='text' value={youtube} onChange={(e) => setYoutube(e.target.value)} />
+                        </Form.Group>
 
-              {(isLoading || isUploading) && <Loader />}
+                        <Form.Group className='my-2' controlId='website'>
+                          <Form.Label>Website</Form.Label>
+                          <Form.Control type='text' value={website} onChange={(e) => setWebsite(e.target.value)} />
+                        </Form.Group>
+                      </>
+                    )}
 
-            </Form>
-          </FormContainer>
+                  </>
+                )}
+
+                {activeSection === 'password' && (
+                  <>
+                    <Form.Group controlId="currentPassword" className="my-2">
+                      <Form.Label>Current Password</Form.Label>
+                      <Form.Control type={isPasswordVisible ? 'text' : 'password'} onChange={(e) => setCurrentPassword(e.target.value)} />
+                      <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+                        {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                      </span>
+                    </Form.Group>
+
+                    <Form.Group controlId="password" className="my-2">
+                      <Form.Label>New Password</Form.Label>
+                      <PasswordValidator password={newPassword} setPassword={setNewPassword} />
+                    </Form.Group>
+
+                    <Form.Group controlId="confirmPassword" className="my-2">
+                      <Form.Label>Confirm Password</Form.Label>
+                      <Form.Control type={isPasswordVisible2 ? 'text' : 'password'} placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                      <span onClick={togglePasswordVisibility2} style={{ cursor: 'pointer' }}>
+                        {isPasswordVisible2 ? <FaEyeSlash /> : <FaEye />}
+                      </span>
+                    </Form.Group>
+                  </>
+                )}
+
+                <Button type="submit" variant="primary" className="mt-3">
+                  Update
+                </Button>
+
+                {(isLoading || isUploading) && <Loader />}
+
+              </Form>
+            </FormContainer>
+          </div>
         </div>
-      </div>
 
-    </div>
+      </div>
+    </>
   );
 };
 

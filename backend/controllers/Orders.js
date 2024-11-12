@@ -2,7 +2,7 @@ import asyncHandler from 'express-async-handler';
 import Target from '../models/Order.js';
 
 const getAll = asyncHandler(async (req, res) => {
-  const target = await Target.find();
+  const target = await Target.find().populate('client').populate('product');
   res.status(200).json(target);
 });
 

@@ -7,7 +7,7 @@ router.get("/", getAll);
 router.get("/name/:name", getByName);
 router.get("/id/:id", getById);
 router.post("/", add);
-// router.put("/:id", update);
-// router.delete("/:id", deleteC);
+router.put("/:id", update);
+router.delete("/:id", deleteC);
 
 export default router;

@@ -11,9 +11,16 @@ const imageApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         getAvatar: builder.mutation({
-            query: (Path, FileName) => ({
-                url: `${URL}/avatar/${Path}/${FileName}`,
+            query: (Path) => ({
+                url: `${URL}/avatar/${Path}`,
                 method: 'GET',
+            }),
+        }),
+        uploadProductImage: builder.mutation({
+            query: (imageList) => ({
+                url: `${URL}/upload-product-image`,
+                method: 'POST',
+                body: imageList,
             }),
         }),
     }),
@@ -22,4 +29,5 @@ const imageApiSlice = apiSlice.injectEndpoints({
 export const {
     useUploadAvatarMutation,
     useGetAvatarMutation,
+    useUploadProductImageMutation,
 } = imageApiSlice;

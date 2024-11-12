@@ -4,7 +4,7 @@ import Tag from '../models/Tag.js';
 import Category from '../models/Category.js';
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const target = await Target.find({ type: 'product' });
+  const target = await Target.find({ type: 'product' }).populate('category');
   res.status(200).json(target);
 });
 
