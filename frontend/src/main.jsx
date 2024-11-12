@@ -30,36 +30,36 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path='/' element={<App />}>
-        <Route index element={<Suspense fallback={<div>Loading...</div>}><HomeScreen /></Suspense>} />
-        <Route path='/login' element={<Suspense fallback={<div>Loading...</div>}><LoginScreen /></Suspense>} />
-        <Route path='/register' element={<Suspense fallback={<div>Loading...</div>}><RegisterScreen /></Suspense>} />
-        <Route path='/about' element={<Suspense fallback={<div>Loading...</div>}><AboutScreen /></Suspense>} />
-        <Route path='/services' element={<Suspense fallback={<div>Loading...</div>}><ServicesScreen /></Suspense>} />
-        <Route path='/how_it_works' element={<Suspense fallback={<div>Loading...</div>}><HowItWorksScreen /></Suspense>} />
-        <Route path='/process' element={<Suspense fallback={<div>Loading...</div>}><ProcessScreen /></Suspense>} />
+        <Route index element={<Suspense fallback={<div><h4>Loading...</h4></div>}><HomeScreen /></Suspense>} />
+        <Route path='/login' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><LoginScreen /></Suspense>} />
+        <Route path='/register' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><RegisterScreen /></Suspense>} />
+        <Route path='/about' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><AboutScreen /></Suspense>} />
+        <Route path='/services' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ServicesScreen /></Suspense>} />
+        <Route path='/how_it_works' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><HowItWorksScreen /></Suspense>} />
+        <Route path='/process' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProcessScreen /></Suspense>} />
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/profile' element={<Suspense fallback={<div>Loading...</div>}><ProfileButtons /></Suspense>} />
+            <Route path='/profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileButtons /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/setting' element={<Suspense fallback={<div>Loading...</div>}><ProfileScreen /></Suspense>} />
+            <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/update' element={<Suspense fallback={<div>Loading...</div>}><ProfileScreen /></Suspense>} />
+            <Route path='/update' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/orders' element={<Suspense fallback={<div>Loading...</div>}><OrdersScreen /></Suspense>} />
+            <Route path='/orders' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><OrdersScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
-            <Route path='/collections' element={<Suspense fallback={<div>Loading...</div>}><CollectionScreen /></Suspense>} />
+            <Route path='/collections' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><CollectionScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
-            <Route path='/contact' element={<Suspense fallback={<div>Loading...</div>}><ContactScreen /></Suspense>} />
+            <Route path='/contact' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ContactScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[3]} />}>
-            <Route path='/portfolio' element={<Suspense fallback={<div>Loading...</div>}><PortfolioScreen /></Suspense>} />
+            <Route path='/portfolio' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><PortfolioScreen /></Suspense>} />
           </Route>
         </Route>
         <Route path="*" element={<div className="not-found-page">404 - Page Not Found</div>} />

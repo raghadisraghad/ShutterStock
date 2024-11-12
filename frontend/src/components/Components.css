@@ -12,6 +12,43 @@
     --hover-link: #979899;
 }
 
+body,
+h3,
+h4,
+h5,
+a {
+    font-family: 'Monument Extended', sans-serif;
+}
+
+h6,
+p {
+    font-family: 'Monument Extended Regular', sans-serif;
+}
+
+h1,
+h2 {
+    font-family: 'Monument Extended Ultrabold', sans-serif;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: var(--white);
+    line-height: 1.2;
+    margin-top: 0;
+    margin-bottom: .5rem;
+}
+
 /* navbar */
 .navbar-nav .nav-link,
 .navbar-brand,
@@ -406,18 +443,18 @@ hr {
     background-color: var(--green-medium);
 }
 
-.nav-link {
+.sidebar .nav-link {
     color: var(--link);
     font-weight: normal;
     transition: color 0.3s ease;
 }
 
-.nav-link.active {
+.sidebar .nav-link.active {
     color: var(--active-link);
     font-weight: bold;
 }
 
-.nav-link:hover {
+.sidebar .nav-link:hover {
     color: var(--hover-link);
     font-weight: bold;
 }
@@ -431,15 +468,23 @@ hr {
 }
 
 /* register */
-.register {
-    width: 100%;
-    max-width: 1000px;
+.register, .card {
+    max-width: 100rem;
     margin: 0 auto;
     background-color: transparent;
     backdrop-filter: blur(10rem);
     box-shadow: 0 6px 12px rgba(79, 238, 238, 0.15);
     padding: 1rem;
     border-radius: 20px;
+    color: var(--white);
+}
+
+.register{
+    width: 100%;
+}
+
+.card{
+    width: 50%;
 }
 
 .register .g-3 {
@@ -471,36 +516,33 @@ hr {
 .image-gallery {
     display: flex;
     flex-wrap: wrap;
-  }
-  
-  .image-item {
+}
+
+.image-item {
     position: relative;
     margin: 5px;
-  }
-  
-  .thumbnail {
+}
+
+.thumbnail {
     width: 100%;
     height: auto;
     border: 1px solid #ddd;
-  }
-  
-  .image-item button {
+}
+
+.image-item button {
     position: absolute;
     top: 5px;
     right: 5px;
-  }
-  
+}
 
 
 
 
 
 
-
-
-  input[textarea]{
+input[textarea] {
     width: 100%;
-  }
+}
 
 
 
@@ -545,20 +587,26 @@ hr {
 
 @media (max-width: 768px) {
     .image-item {
-        flex: 1 1 45%; /* On small screens, images take up more space */
-        max-width: 45%; /* Adjust max width */
+        flex: 1 1 45%;
+        /* On small screens, images take up more space */
+        max-width: 45%;
+        /* Adjust max width */
     }
 
     .image-item button {
-        top: 10px; /* Increase spacing for buttons */
-        right: 10px; 
+        top: 10px;
+        /* Increase spacing for buttons */
+        right: 10px;
     }
-    .line{
+
+    .line {
         display: none;
     }
-    .home-container{
+
+    .home-container {
         display: grid;
     }
+
     .logo-container .logo {
         width: 70vw;
     }
@@ -567,13 +615,14 @@ hr {
 /* For larger screens, ensure the images are displayed correctly */
 @media (min-width: 1024px) {
     .image-item {
-        flex: 1 1 15%; /* Images take up less space on larger screens */
+        flex: 1 1 15%;
+        /* Images take up less space on larger screens */
     }
 }
 
 /* For larger screens, ensure the images are displayed correctly */
 @media (max-width: 400px) {
-    .footer-logo{
+    .footer-logo {
         width: 70vw;
         display: grid;
     }
