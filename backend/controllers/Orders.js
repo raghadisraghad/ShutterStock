@@ -8,7 +8,7 @@ const getAll = asyncHandler(async (req, res) => {
 
 const getById = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const target = await Target.findById(id);
+  const target = await Target.findById(id).populate('client').populate('product');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -17,7 +17,7 @@ const getById = asyncHandler(async (req, res) => {
 
 const getClientOrder = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const target = await Target.find({ client: id });
+  const target = await Target.find({ client: id }).populate('client').populate('product');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -26,7 +26,7 @@ const getClientOrder = asyncHandler(async (req, res) => {
 
 const getVendorOrder = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const target = await Target.find({ client: id });
+  const target = await Target.find({ client: id }).populate('client').populate('product');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }

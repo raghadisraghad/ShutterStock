@@ -34,10 +34,10 @@ const LoginScreen = () => {
     try {
       const res = await login({ username, password }).unwrap();
       dispatch(setCredentials({ ...res }));
-      toast.success('Logged In successfully!');
+      toast.success('Logged In successfully!', { autoClose: 1000, });
       navigate('/');
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.data?.message || err.error, { autoClose: 1000, });
     }
   };
 
@@ -53,15 +53,19 @@ const LoginScreen = () => {
 
         <Form.Group className='my-2' controlId='password'>
           <Form.Label>Password</Form.Label>
-          <Form.Control type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} ></Form.Control>
-          <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
-            {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-          </span>
+          <div className="password-input-container">
+            <Form.Control type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} ></Form.Control>
+            <span onClick={togglePasswordVisibility} className="password-toggle">
+              {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+            </span>
+          </div>
         </Form.Group>
 
-        <Button disabled={isLoading} type='submit' variant='primary' className='mt-3' >
-          Sign In
-        </Button>
+        <div className='center'>
+          <Button disabled={isLoading} type='submit' variant='primary' className='mt-3' >
+            Sign In
+          </Button>
+        </div>
       </Form>
 
       {isLoading && <Loader />}

@@ -11,7 +11,7 @@ const add = asyncHandler(async (req, res) => {
 
 const update = asyncHandler(async (req, res) => {
     const { id } = req.params;
-    const updateData = req.body;
+    const { ...updateData } = req.body;
 
     const targetCheck = await Target.findById(id);
     if (!targetCheck) {
@@ -28,16 +28,19 @@ const update = asyncHandler(async (req, res) => {
         return res.status(400).send({ error: 'Username Already In Use' });
     }
 
-    if (updateData.currentPassword != null) {
+    if(updateData.currentPassword){
         const isPasswordValid = await bcrypt.compare(updateData.currentPassword, targetCheck.password);
-        if (isPasswordValid)
-            updateData.password = await bcrypt.hash(updateData.password, 10);
-        else
-            return res.status(400).send({ error: 'Current Password Invalid!' });
-    } else {
-        updateData.password = targetCheck.password;
+        if(isPasswordValid){
+            if (updateData.password && updateData.password !== targetCheck.password) {
+                updateData.password = await bcrypt.hash(updateData.password, 10);
+            }
+            else{
+                updateData.password = targetCheck.password;
+            }
+        }else
+            return res.status(400).send({ error: 'Current Password Not correct' });
     }
-
+    
     const target = await Target.findByIdAndUpdate(id, updateData, { new: true });
     res.status(200).json({ message: "Updated Successfully", user: target });
 });

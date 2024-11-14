@@ -7,7 +7,6 @@ import dotenv from 'dotenv';
 dotenv.config({ path: '../.env' });
 
 const register = asyncHandler(async (req, res) => {
-  console.log("Request Body:", req.body);
   const {
     role, firstName, lastName, username, email,
     password, tel, birthDate, avatar, description,
@@ -32,7 +31,7 @@ const register = asyncHandler(async (req, res) => {
     birthDate,
     avatar,
     description,
-    materials: Array.isArray(materials) ? materials : materials ? materials.split(', ') : [],
+    materials,
     instagram,
     linkedin,
     facebook,

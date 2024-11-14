@@ -36,10 +36,10 @@ const PasswordValidator = ({ password, setPassword, showErrorMessage = true }) =
     };
 
     return (
-        <div>
-            <input type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password' value={password} onChange={handleChange} className='input' required />
+        <div className="password-input-container">
+            <input type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password...' value={password} onChange={handleChange} className='input' required />
             {showErrorMessage && !isValid && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+            <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} className="password-toggle" >
                 {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
             </span>
         </div>

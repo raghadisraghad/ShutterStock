@@ -5,51 +5,11 @@
     --red-dark: #B81D23;
     --red-medium: #CF131B;
     --red-light: #E50913;
-    --black: #000000;
     --link: #6c757d;
     --active-link: #2CC295;
-    --white: #ffffff;
     --hover-link: #979899;
 }
 
-body,
-h3,
-h4,
-h5,
-a {
-    font-family: 'Monument Extended', sans-serif;
-}
-
-h6,
-p {
-    font-family: 'Monument Extended Regular', sans-serif;
-}
-
-h1,
-h2 {
-    font-family: 'Monument Extended Ultrabold', sans-serif;
-}
-
-.h1,
-.h2,
-.h3,
-.h4,
-.h5,
-.h6,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p {
-    color: var(--white);
-    line-height: 1.2;
-    margin-top: 0;
-    margin-bottom: .5rem;
-}
-
-/* navbar */
 .navbar-nav .nav-link,
 .navbar-brand,
 .dropdown-item,
@@ -74,7 +34,6 @@ span {
     background-color: var(--green-dark);
 }
 
-/* spinner */
 .spinner {
     width: 100px;
     height: 100px;
@@ -92,9 +51,10 @@ span {
     }
 }
 
-/* footer */
+/* -----------------------------Footer----------------------------- */
+
 footer {
-    color: var(--white);
+    color: white;
     padding: 0rem 2rem;
     display: flex;
     flex-direction: column;
@@ -142,12 +102,12 @@ footer {
 
 .footer-links p {
     font-size: 16px;
-    color: var(--white);
+    color: white;
 }
 
 .footer-contact {
     font-size: 16px;
-    color: var(--white);
+    color: white;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -169,25 +129,26 @@ footer {
 }
 
 .footer-bottom p {
-    color: var(--white);
+    color: white;
 }
 
-.footer-bottom p a {
-    color: var(--white);
+.footer-bottom a {
+    color: white;
 }
 
-.footer-bottom p a:hover {
+.footer-bottom a:hover {
     color: var(--green-light);
 }
 
 hr {
     height: 0.2rem;
-    background-color: var(--black);
+    background-color: black;
     margin: 20px 0;
     width: 100%;
 }
 
-/* home page */
+/* -----------------------------Home----------------------------- */
+
 .home-container {
     display: flex;
     justify-content: space-between;
@@ -199,6 +160,7 @@ hr {
 .left-side {
     flex: 1;
     text-align: left;
+    color: white;
 }
 
 .left-side h1 {
@@ -215,14 +177,14 @@ hr {
     color: var(--green-medium);
 }
 
-.whenshoot {
+.when-shoot {
     font-size: 2rem;
     color: var(--green-dark);
 }
 
 .lorem-text {
     font-size: 1rem;
-    color: var(--green-dark);
+    color: white;
 }
 
 .get-started-btn {
@@ -237,7 +199,11 @@ hr {
 }
 
 .get-started-btn:hover {
-    background-color: var(--green-light);
+    background-color: var(--green-dark);
+}
+
+.get-started-btn:hover a {
+    color: var(--green-medium);
 }
 
 .get-started-btn a {
@@ -293,7 +259,8 @@ hr {
     height: auto;
 }
 
-/* login/register */
+/* -----------------------------Authentication----------------------------- */
+
 .auth {
     background-color: var(--green-medium);
     padding: 2rem;
@@ -304,7 +271,7 @@ hr {
 
 .mt-3 {
     background-color: var(--green-dark);
-    color: var(--white);
+    color: white;
     font-size: 1.1rem;
     padding: 0.8rem 2rem;
     width: 100%;
@@ -312,6 +279,42 @@ hr {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+}
+
+.materials {
+    margin: 0.2rem;
+}
+
+.materials span {
+    margin: 0.2rem;
+    cursor: pointer;
+}
+
+.materials ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.materials li:hover {
+    color: var(--green-medium);
+}
+
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
 }
 
 .mt-3:hover {
@@ -323,9 +326,25 @@ hr {
     border-radius: 5px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    color: var(--black);
+    color: black;
     width: 100%;
     transition: border-color 0.5s ease;
+}
+
+.inputBirthDay {
+    display: grid;
+    padding: 0;
+    margin: 0;
+}
+
+.inputBirthDay input {
+    display: grid;
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100%;
+    transition: border-color 0.5s ease;
+    border-radius: 10px;
+    margin: 0;
 }
 
 .input:focus {
@@ -336,7 +355,7 @@ hr {
 
 .upload-btn {
     border: 1px solid #ced4da;
-    color: var(--white);
+    color: white;
     font-size: 1rem;
     padding: 0.6rem 1.2rem;
     border-radius: 5px;
@@ -357,7 +376,6 @@ hr {
     transform: scale(0.95);
 }
 
-/* profile button navbar */
 .profile-buttons-container {
     display: flex;
     justify-content: center;
@@ -370,7 +388,7 @@ hr {
 
 .button-custom {
     background-color: var(--green-middle);
-    color: var(--white);
+    color: white;
     margin: 0.5rem;
     padding: 0.6rem 1.2rem;
     font-weight: bold;
@@ -387,32 +405,171 @@ hr {
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
 }
 
+.register {
+    max-width: 100rem;
+    margin: 0 auto;
+    background-color: transparent;
+    backdrop-filter: blur(20rem);
+    box-shadow: 0 6px 12px rgb(74, 230, 230);
+    padding: 1rem;
+    margin: 2rem;
+    border-radius: 20px;
+    color: white;
+}
 
-/* update profile form */
-.profile-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 2%;
-    margin: 1rem;
+.register a,
+.card a {
+    color: var(--green-medium);
+}
+
+.register a:hover,
+.card a:hover {
+    color: var(--green-light);
+}
+
+.container-policy {
+    display: grid;
+    justify-content: center;
+}
+
+.term-policy-container {
+    max-height: 20rem;
+    width: 50rem;
+    overflow-y: auto;
+    background-color: transparent;
+    backdrop-filter: blur(20rem);
+    box-shadow: 0 6px 5rem var(--green-dark);
+    border-radius: 2rem;
+    justify-items: center;
+    padding: 2rem;
+    margin: 2rem;
+}
+
+.term-policy-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.term-policy-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.term-policy-container::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+}
+
+.term-policy-container::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.checkbox {
     margin: 1rem;
 }
+
+.card {
+    width: 40%;
+}
+
+.register .g-3 {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.register .g-3 .col-sm-4 {
+    flex: 1 1 30%;
+}
+
+.register .form-group {
+    margin-bottom: 15px;
+}
+
+.register .form-group label {
+    font-weight: bold;
+}
+
+.register .form-group input,
+.register .form-group select,
+.register .form-group textarea {
+    width: 100%;
+}
+
+/* -----------------------------Profile----------------------------- */
+
+.profileHeader img {
+    cursor: pointer;
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.password-input-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.password{
+    display: flex;
+    justify-content: space-between;
+}
+
+.password-input-container .form-label {
+  margin-right: 1rem;
+  flex: 1;
+}
+
+.password-input-container .form-control {
+  flex: 2;
+}
+
+.password-input-container .password-toggle {
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+
+.profile-container {
+    width: 100%;
+    display: flex;
+    gap: 1%;
+    margin-top: 1rem;
+    padding: 0;
+}
+
+.profileHeader {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    flex-direction: row;
+    padding: 1rem;
+}
+
+.upload-container {
+    display: flex;
+    align-items: center;
+}
+
 
 .sidebar {
     background-color: #03624C30;
     backdrop-filter: blur(10px);
     border-radius: 5rem 0 0 0;
     padding: 2rem;
-    color: var(--white);
+    color: white;
     height: 35vh;
-    width: 30%;
+    width: 25%;
+    padding-top: 2rem;
 }
 
 .form-content {
     background-color: #03624C30;
     backdrop-filter: blur(10px);
     border-radius: 0 10rem;
-    width: 70%;
-    padding: 1rem;
+    width: 80%;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -420,12 +577,11 @@ hr {
     background-color: transparent;
     padding: 30px;
     border: none;
-    color: var(--white);
+    color: white;
 }
 
 .custom-form-container .col-md-6,
 .custom-form-container .col-12 {
-    max-width: 100%;
     width: 100%;
 }
 
@@ -433,7 +589,7 @@ hr {
     background-color: var(--green-dark);
     width: 10rem;
     border: none;
-    color: var(--white);
+    color: white;
     padding: 0.5rem 1rem;
     margin-top: 1rem;
     cursor: pointer;
@@ -459,60 +615,6 @@ hr {
     font-weight: bold;
 }
 
-.profileHeader {
-    justify-content: space-around;
-    justify-items: center;
-    align-items: center;
-    flex-direction: column-reverse;
-    padding: 1rem;
-}
-
-/* register */
-.register, .card {
-    max-width: 100rem;
-    margin: 0 auto;
-    background-color: transparent;
-    backdrop-filter: blur(10rem);
-    box-shadow: 0 6px 12px rgba(79, 238, 238, 0.15);
-    padding: 1rem;
-    border-radius: 20px;
-    color: var(--white);
-}
-
-.register{
-    width: 100%;
-}
-
-.card{
-    width: 50%;
-}
-
-.register .g-3 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-}
-
-.register .g-3 .col-sm-4 {
-    flex: 1 1 30%;
-}
-
-.register .form-group {
-    margin-bottom: 15px;
-}
-
-.register .form-group label {
-    font-weight: bold;
-}
-
-.register .form-group input,
-.register .form-group select,
-.register .form-group textarea {
-    width: 100%;
-}
-
-/* collection */
-
 .image-gallery {
     display: flex;
     flex-wrap: wrap;
@@ -535,13 +637,19 @@ hr {
     right: 5px;
 }
 
-
-
-
-
-
 input[textarea] {
     width: 100%;
+}
+
+.form-content .form-group,
+.sidebar .form-group {
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar .form-group {
+    padding-left: 1rem;
+    padding-right: 1rem;
 }
 
 
@@ -550,7 +658,7 @@ input[textarea] {
 
 
 
-/* Media */
+
 
 
 @media (max-width: 768px) {
@@ -588,14 +696,11 @@ input[textarea] {
 @media (max-width: 768px) {
     .image-item {
         flex: 1 1 45%;
-        /* On small screens, images take up more space */
         max-width: 45%;
-        /* Adjust max width */
     }
 
     .image-item button {
         top: 10px;
-        /* Increase spacing for buttons */
         right: 10px;
     }
 
@@ -612,15 +717,12 @@ input[textarea] {
     }
 }
 
-/* For larger screens, ensure the images are displayed correctly */
 @media (min-width: 1024px) {
     .image-item {
         flex: 1 1 15%;
-        /* Images take up less space on larger screens */
     }
 }
 
-/* For larger screens, ensure the images are displayed correctly */
 @media (max-width: 400px) {
     .footer-logo {
         width: 70vw;

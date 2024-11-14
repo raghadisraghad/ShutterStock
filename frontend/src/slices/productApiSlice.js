@@ -4,10 +4,10 @@ const USERS_URL = '/api/products';
 export const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     addProduct: builder.mutation({
-      query: (data) => ({
+      query: (productData) => ({
         url: `${USERS_URL}`,
         method: 'POST',
-        body: data,
+        body: productData,
       }),
     }),
     updateProduct: builder.mutation({
@@ -32,6 +32,18 @@ export const productApiSlice = apiSlice.injectEndpoints({
     getServices: builder.query({
       query: () => ({
         url: `${USERS_URL}/services`,
+        method: 'GET',
+      }),
+    }),
+    getProductsByVendor: builder.query({
+      query: (vendorId) => ({
+        url: `${USERS_URL}/products/${vendorId}`,
+        method: 'GET',
+      }),
+    }),
+    getServicesByVendor: builder.query({
+      query: (vendorId) => ({
+        url: `${USERS_URL}/services/${vendorId}`,
         method: 'GET',
       }),
     }),
@@ -79,4 +91,6 @@ export const {
   useGetServicesByCategoryQuery,
   useGetProductsByCategoryQuery,
   useGetProductsByTagQuery,
+  useGetProductsByVendorQuery,
+  useGetServicesByVendorQuery
 } = productApiSlice;

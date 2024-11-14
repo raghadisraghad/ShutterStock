@@ -4,13 +4,13 @@ import Tag from '../models/Tag.js';
 import Category from '../models/Category.js';
 
 const getAllProducts = asyncHandler(async (req, res) => {
-  const target = await Target.find({ type: 'product' }).populate('category');
+  const target = await Target.find({ type: 'product' }).populate('vendor').populate('category');
   res.status(200).json(target);
 });
 
 const getProductByVendorId = asyncHandler(async (req, res) => {
   const { vendorId } = req.params
-  const target = await Target.find({ type: 'product', vendor: vendorId });
+  const target = await Target.find({ type: 'product', vendor: vendorId }).populate('vendor').populate('category').populate('tags');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -19,7 +19,7 @@ const getProductByVendorId = asyncHandler(async (req, res) => {
 
 const getServiceByVendorId = asyncHandler(async (req, res) => {
   const { vendorId } = req.params
-  const target = await Target.find({ type: 'service', vendor: vendorId });
+  const target = await Target.find({ type: 'service', vendor: vendorId }).populate('vendor').populate('category').populate('tags');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -27,13 +27,13 @@ const getServiceByVendorId = asyncHandler(async (req, res) => {
 });
 
 const getAllServices = asyncHandler(async (req, res) => {
-  const target = await Target.find({ type: 'service' });
+  const target = await Target.find({ type: 'service' }).populate('vendor').populate('category');
   res.status(200).json(target);
 });
 
 const getById = asyncHandler(async (req, res) => {
   const { id } = req.params
-  const target = await Target.findById(id);
+  const target = await Target.findById(id).populate('vendor').populate('category');
   if (!target) {
     return res.status(404).send({ error: 'Target Not Found!' });
   }
@@ -42,7 +42,7 @@ const getById = asyncHandler(async (req, res) => {
 
 const getByTag = asyncHandler(async (req, res) => {
   const { search } = req.params
-  const tag = await Tag.findOne({ name: search });
+  const tag = await Tag.findOne({ name: search }).populate('category');
   if (!tag) {
     return res.status(404).send({ error: 'Tag Not Found!' });
   }
@@ -80,9 +80,15 @@ const getServiceByCategory = asyncHandler(async (req, res) => {
 });
 
 const add = asyncHandler(async (req, res) => {
-  const target = new Target(req.body)
-  await target.save()
-  res.status(200).json({ message: "Operation Success " })
+  try {
+    const { productData } = req.body;
+    const target = new Target(productData);
+    await target.save();
+    res.status(200).json({ message: "Operation Success " });
+  } catch (error) {
+    console.error("Error adding product:", error);
+    res.status(500).json({ message: "Error adding product" });
+  }
 });
 
 const update = asyncHandler(async (req, res) => {

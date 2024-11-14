@@ -53,8 +53,8 @@ const Header = () => {
                 <Nav.Link>How It Works</Nav.Link>
               </LinkContainer>
 
-              <LinkContainer to={'/process'}>
-                <Nav.Link>Process</Nav.Link>
+              <LinkContainer to={'/products'}>
+                <Nav.Link>roducts</Nav.Link>
               </LinkContainer>
             </Nav>
 

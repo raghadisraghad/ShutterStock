@@ -8,19 +8,22 @@ import { upload, productImageUpload } from '../middleware/image.js';
 dotenv.config({ path: './.env' });
 const router = express.Router();
 const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Users');
+const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Products');
 
 router.post('/upload-avatar', upload.single('avatar'), async (req, res) => {
   const userId = req.body.userId;
   if (userId) {
     const user = await User.findById(userId);
     const avatarUrl = user.avatar;
-    fs.unlink(avatarUrl, (err) => {
-      if (err) {
-        console.error('Error deleting file:', err);
-        return;
-      }
-      console.log('File deleted successfully');
-    });
+    if (fs.existsSync(avatarUrl)) {
+      fs.unlink(avatarUrl, (err) => {
+        if (err) {
+          console.error('Error deleting file:', err);
+          return;
+        }
+        console.log('File deleted successfully');
+      });
+    }
   }
 
   if (req.file) {
@@ -43,10 +46,19 @@ router.get('/avatar/:url', (req, res) => {
   });
 });
 
-router.post('/upload-product-image', productImageUpload.single('pictures'), async (req, res) => {
-  const userId = req.body.vendor;
-  if (!userId)
-    res.status(404).json({ message: 'User not found!' });
+router.post('/upload-product-image/:id', productImageUpload.array('pictures'), async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    return res.status(404).json({ message: 'User not found!' });
+  }
+
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'No images uploaded!' });
+  }
+
+  const imageUrls = path.join(uploadProductDirectory, req.file.filename);
+  return res.status(200).json({ imageUrls });
 });
+
 
 export default router;

@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
 import ProfileButtons from './components/ProfileButtons.jsx';
+import PrivateRoute from './components/PrivateRoute.jsx';
+import RoleRoute from './components/RoleRoute.jsx';
+import App from './App.jsx';
 
 // Lazy load screens for better performance
 const HomeScreen = lazy(() => import('./screens/home.jsx'));
@@ -15,16 +18,13 @@ const ProfileScreen = lazy(() => import('./screens/profile.jsx'));
 const AboutScreen = lazy(() => import('./screens/about.jsx'));
 const ServicesScreen = lazy(() => import('./screens/services.jsx'));
 const HowItWorksScreen = lazy(() => import('./screens/howItWorks.jsx'));
-const ProcessScreen = lazy(() => import('./screens/process.jsx'));
+const ProductsScreen = lazy(() => import('./screens/products.jsx'));
 const PortfolioScreen = lazy(() => import('./screens/portfolio.jsx'));
 const OrdersScreen = lazy(() => import('./screens/orders.jsx'));
 const CollectionScreen = lazy(() => import('./screens/collections.jsx'));
 const ContactScreen = lazy(() => import('./screens/contact.jsx'));
-
-// Import components
-import PrivateRoute from './components/PrivateRoute.jsx';
-import RoleRoute from './components/RoleRoute.jsx';
-import App from './App.jsx';
+const SettingsScreen = lazy(() => import('./screens/settings.jsx'));
+const PolicyAndTermsScreen = lazy(() => import('./screens/policyAndTerms.jsx'));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -36,7 +36,9 @@ const router = createBrowserRouter(
         <Route path='/about' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><AboutScreen /></Suspense>} />
         <Route path='/services' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ServicesScreen /></Suspense>} />
         <Route path='/how_it_works' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><HowItWorksScreen /></Suspense>} />
-        <Route path='/process' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProcessScreen /></Suspense>} />
+        <Route path='/products' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProductsScreen /></Suspense>} />
+        <Route path='/terms-and-policy' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><PolicyAndTermsScreen /></Suspense>} />
+        <Route path='/vendor-profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><PolicyAndTermsScreen /></Suspense>} />
 
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
@@ -44,7 +46,7 @@ const router = createBrowserRouter(
             <Route path='/profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileButtons /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
+            <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><SettingsScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
             <Route path='/update' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />

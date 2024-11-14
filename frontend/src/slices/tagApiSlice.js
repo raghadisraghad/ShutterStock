@@ -41,6 +41,12 @@ export const tagApiSlice = apiSlice.injectEndpoints({
         method: 'GET',
       }),
     }),
+    getTagsByCategory: builder.query({
+      query: ({ category }) => ({
+        url: `${USERS_URL}/category/${category}`,
+        method: 'GET',
+      }),
+    }),
 }),
 });
 
@@ -51,4 +57,5 @@ export const {
   useGetTagsQuery,
   useGetTagsByIdQuery,
   useGetTagsByNameQuery,
+  useGetTagsByCategoryQuery,
 } = tagApiSlice;

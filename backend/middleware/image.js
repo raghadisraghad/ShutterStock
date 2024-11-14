@@ -18,16 +18,6 @@ if (!fs.existsSync(uploadProductDirectory)) {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // const userId = req.body.userId || req.headers['user-id'];
-    // if (!userId) {
-    //   return cb(new Error("User ID is required"));
-    // }
-
-    // const userDirectory = path.join(uploadDirectory, userId.toString());
-
-    // if (!fs.existsSync(userDirectory)) {
-    //   fs.mkdirSync(userDirectory, { recursive: true });
-    // }
     cb(null, uploadDirectory);
   },
   filename: (req, file, cb) => {
@@ -37,7 +27,7 @@ const storage = multer.diskStorage({
 
 const storage2 = multer.diskStorage({
   destination: (req, file, cb) => {
-    const userId = req.body.vendor;
+    const userId = req.params.id;
 
     if (!userId) {
       return cb(new Error('User ID is required'), false);
