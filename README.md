@@ -20,40 +20,36 @@ cd ShutterStock
 ## Configuration for the Backend 
 
 ```bash
-npm install express mongoose axios dotenv cors bcryptjs jsonwebtoken cookie-parser express-async-handler
-npm i -D nodemon multer
+cd backend
+npm install
 
 ```
-*[Backend README](https://github.com/raghadisraghad/ShutterStock/tree/main/backend/README.md).*
-
 ### Explanation
-express : the framework we will be working with
-mongoose : the mongoDB
-axios : facilitate using endpoints inside other endpoints or functions
-dotenv : to be able to use the .env file
-cors : to be enable the requests from different origins and share the appropriate headers
-bcryptjs : for securing passwords
-jsonwebtoken : to be able to generate and verify json web tokens
-cookie-parser : to be able to create cookies and control them
-express-async-handler : to handle async inside functions and methods without using try and catch
-nodemon : allows auto saving the code modifications without stopping the backend server
-multer : for uploading images
+this will install all the dependencies needed to configure the backend
 
 
 
 ## Configuration for the FrontEnd 
 
 ```bash
-npm i -D concurrently
+cd frontend
+npm install
 ```
-*[FrontEnd README](https://github.com/raghadisraghad/ShutterStock/tree/main/frontend/README.md).*
-
 ### Explanation
-concurrently : to be able to run multiple development environment at once
+this will install all the dependencies needed to configure the frontend
 
 
 ## Run Both the Server and Client
 
 ```bash
+cd backend
 npm run dev
 ```
+
+or using docker
+
+```bash
+docker-compose up --build
+```
+
+this will build all the images and dependencies needed to run the app using a cloud mongodb
