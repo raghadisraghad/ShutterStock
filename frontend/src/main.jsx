@@ -67,7 +67,12 @@ const router = createBrowserRouter(
         <Route path="*" element={<div className="not-found-page">404 - Page Not Found</div>} />
       </Route>
     </>
-  )
+  ),
+  {
+    future: {
+      v7_startTransition: true,
+    },
+  }
 );
 
 ReactDOM.createRoot(document.getElementById('root')).render(

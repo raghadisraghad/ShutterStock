@@ -3,10 +3,10 @@ import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: './.env' });
+dotenv.config({ path: '../../.env' });
 
-const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Users');
-const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, '/Products');
+const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Users');
+const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Products');
 
 if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });

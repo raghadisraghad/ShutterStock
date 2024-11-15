@@ -56,5 +56,4 @@ build-iPhoneSimulator/
 # .rubocop-https?--*
 
 node_modules
-package.json
 .env

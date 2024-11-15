@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -7,20 +7,20 @@ import { logout } from '../slices/authSlice';
 import { FaSun, FaMoon } from 'react-icons/fa';
 
 const settings = () => {
-  const [darkMode, setDarkMode] = useState(false);
-  const [deleteError, setDeleteError] = useState('');
-  const [emailNotifications, setEmailNotifications] = useState(true);  // Example for email notification
-  const [notificationFrequency, setNotificationFrequency] = useState('daily');  // Frequency setting
-
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [deleteError, setDeleteError] = useState('');
+  const [emailNotifications, setEmailNotifications] = useState(true);
   const [deleteUser, { isLoading: isDeletingAccount }] = useDeleteUserMutation();
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('theme') === 'dark');
 
   const toggleDarkMode = () => {
+    const newTheme = darkMode ? 'light' : 'dark';
     setDarkMode(!darkMode);
-    document.body.classList.toggle('dark-mode', !darkMode);
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   };
 
   const handleDeleteProfile = async () => {
@@ -49,15 +49,11 @@ const settings = () => {
   };
 
   const redirectToTermsAndPrivacy = () => {
-    navigate('/terms-and-conditions');
+    navigate('/terms-and-policy');
   };
 
   const handleEmailNotifications = (e) => {
     setEmailNotifications(e.target.checked);
-  };
-
-  const handleNotificationFrequency = (e) => {
-    setNotificationFrequency(e.target.value);
   };
 
   return (
@@ -66,11 +62,15 @@ const settings = () => {
 
       <div className="setting-section">
         <h3>Theme</h3>
-        <label className="switch">
-          <input type="checkbox" checked={darkMode} onChange={toggleDarkMode} />
-          <span className="slider"></span>
-        </label>
-        <span>{darkMode ? <FaMoon /> : <FaSun />} {darkMode ? 'Dark Mode' : 'Light Mode'}</span>
+        <div className="theme-toggle-container">
+          <span className="theme-icon">
+            {darkMode ? <FaMoon /> : <FaSun />}
+          </span>
+          <div className="switch" onClick={toggleDarkMode}>
+            <div className={`slider ${darkMode ? 'slider-dark' : 'slider-light'}`}></div>
+          </div>
+          <span>{darkMode ? 'Dark Mode' : 'Light Mode'} On</span>
+        </div>
       </div>
 
       <div className="setting-section">
@@ -78,14 +78,6 @@ const settings = () => {
         <label>
           <input type="checkbox" checked={emailNotifications} onChange={handleEmailNotifications} />
           Receive Email Notifications
-        </label>
-        <label>
-          <select value={notificationFrequency} onChange={handleNotificationFrequency}>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-          Notification Frequency
         </label>
       </div>
 

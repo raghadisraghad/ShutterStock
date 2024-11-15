@@ -15,11 +15,13 @@ const authSlice = createSlice({
       state.token = token;
       localStorage.setItem('userInfo', JSON.stringify(state.userInfo));
       localStorage.setItem('token', JSON.stringify(state.token));
+      localStorage.setItem('theme', 'light');
     },
     logout: (state, action) => {
       state.userInfo = null;
       localStorage.removeItem('userInfo');
       localStorage.removeItem('token');
+      localStorage.removeItem('theme');
     },
   },
 });

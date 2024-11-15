@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
+import SearchBar from '../components/SearchBar';
 
 const Home = () => {
+
+  const [darkMode, setDarkMode] = useState(localStorage.getItem('theme') === 'dark');
+  let src = "";
+  if(darkMode)
+    src = "../../media/logo principle white.png";
+  else
+    src = "../../media/logo principle black.png";
+
   return (
     <>
       <div className="home-container">
@@ -21,14 +30,13 @@ const Home = () => {
 
         <div className="right-side">
           <div className="logo-container">
-            <img src="../../media/logo principle white.png" alt="Logo" className="logo" />
+            <img src={`${src}`}alt="Logo" className="logo" />
             <div className="logo-glow"></div>
           </div>
         </div>
       </div>
 
-      <div className="searchBar">
-      </div>
+      <SearchBar></SearchBar>
     </>
   );
 };

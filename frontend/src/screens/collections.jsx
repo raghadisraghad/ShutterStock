@@ -28,9 +28,10 @@ const Collections = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();
   const [uploadProductImages] = useUploadProductImageMutation();
-  const { data: products, isLoading: productsLoading, error: productError } = useGetProductsByVendorQuery(userInfo._id);
-  const { data: services, isLoading: servicesLoading, error: serviceError } = useGetServicesByVendorQuery(userInfo._id);
+  const { data: products, isLoading: productsLoading, error: productError, refetch: refreshProducts } = useGetProductsByVendorQuery(userInfo._id);
+  const { data: services, isLoading: servicesLoading, error: serviceError, refetch: refreshServices } = useGetServicesByVendorQuery(userInfo._id);
   const { data: tagsData, isLoading: tagsLoading } = useGetTagsByCategoryQuery(category ? { category } : skipToken);
+  const [showPopup, setShowPopup] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -123,7 +124,9 @@ const Collections = () => {
       await updateProduct({ id: productId, ...data }).unwrap();
       toast.success('Product updated successfully!', { autoClose: 1000, });
       setEditProduct(null);
-      navigate('/collections');
+      setShowPopup(null);
+      refreshProducts();
+      refreshServices();
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
     }
@@ -176,6 +179,80 @@ const Collections = () => {
       <Button onClick={() => navigate('/profile')} className="button-custom">Back</Button>
       <h1>Collections</h1>
       <div className="profile-container">
+        {(activeSection === 'product' || activeSection === 'service') && (
+          <>
+            <div className={`overlay ${showPopup ? 'active' : ''}`} onClick={() => setShowPopup(false)}></div>
+            <div className={`update-profile-popup ${showPopup ? 'active' : ''}`}>
+
+              {editProduct ? (<Form onSubmit={(e) => { if (editProduct) handleUpdateProduct(editProduct._id, e); }}>
+
+                <button onClick={() => { cancelHandle(); setShowPopup(false); }}>Cancel</button>
+
+                <Form.Group controlId="description">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control as="textarea" rows={3} placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                </Form.Group>
+
+                <Form.Group controlId="price">
+                  <Form.Label>Price</Form.Label>
+                  <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                </Form.Group>
+
+                <Form.Group controlId="category">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Control as="select" value={category} onChange={(e) => { setCategory(e.target.value); setTags([]); }} required >
+                    <option value="">Select a category</option>
+                    {!categoriesLoading && categories?.map((cat) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
+                  </Form.Control>
+                </Form.Group>
+
+                <Form.Group controlId="tags">
+                  <Form.Label>Tags</Form.Label>
+                  <div className="tag-input-container">
+                    {tagsLoading ? (
+                      <p>Loading tags...</p>
+                    ) : (
+                      <Dropdown>
+                        <Dropdown.Toggle variant="outline-primary">
+                          {'Select a Tag'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                          {tagsList?.filter(tag => !tags.includes(tag)).map((tag) => (
+                            <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
+                              {tag.name}
+                            </Dropdown.Item>
+                          ))}
+                        </Dropdown.Menu>
+                      </Dropdown>
+                    )}
+                  </div>
+
+                  <div className="tags-list">
+                    {tags.map((tag) => (
+                      <div className='span'>
+                        <div key={tag._id} className="tag-item">
+                          #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Form.Group>
+
+                <Button type="submit" variant="primary" disabled={isLoading}>
+                  {isLoading ? 'Updating...' : 'Update'}
+                </Button>
+              </Form>
+              ) : (
+                <p>No item selected for editing</p>
+              )}
+            </div>
+          </>
+        )}
+
         <div className="sidebar">
           <h5>Settings</h5>
           <Nav className="flex-column">
@@ -195,378 +272,203 @@ const Collections = () => {
           <div className="custom-form-container">
             <FormContainer>
               <div className="profileHeader">
-
                 {activeSection === 'addProduct' && (
                   <Form onSubmit={handleAddProduct}>
-                    <Form.Group controlId="title">
-                      <Form.Label>Title</Form.Label>
-                      <Form.Control
-                        type="text"
-                        placeholder="Enter title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
+                    <h1>Create a Product/Service</h1>
 
-                    <Form.Group controlId="description">
-                      <Form.Label>Description</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        placeholder="Enter description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
+                    <Row className="mt-4">
+                      <Col ms={5}>
+                        <Form.Group controlId="title">
+                          <Form.Label>Title</Form.Label>
+                          <Form.Control type="text" placeholder="Enter title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                        </Form.Group>
+                      </Col>
 
-                    <Form.Group controlId="type">
-                      <Form.Label>Type</Form.Label>
-                      <div className="d-flex">
-                        <Form.Check type="radio" id="product" label="Product" name="type" checked={type === 'product'} onChange={() => setType('product')} />
-                        <Form.Check type="radio" id="service" label="Service" name="type" checked={type === 'service'} onChange={() => setType('service')} />
-                      </div>
-                    </Form.Group>
-
-                    <Form.Group controlId="price">
-                      <Form.Label>Price</Form.Label>
-                      <Form.Control
-                        type="number"
-                        placeholder="Enter price"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-
-                    {/* Category Selection */}
-                    <Form.Group controlId="category">
-                      <Form.Label>Category</Form.Label>
-                      <Form.Control
-                        as="select"
-                        value={category}
-                        onChange={(e) => { setCategory(e.target.value) }}
-                        required
-                      >
-                        <option value="">Select a category</option>
-                        {!categoriesLoading &&
-                          categories?.map((cat) => (
-                            <option key={cat._id} value={cat._id}>
-                              {cat.name}
-                            </option>
-                          ))}
-                      </Form.Control>
-                    </Form.Group>
-
-                    {/* Tags Input */}
-                    <Form.Group controlId="tags">
-                      <Form.Label>Tags</Form.Label>
-                      <div className="tag-input-container">
-                        {tagsLoading ? (
-                          <p>Loading tags...</p>
-                        ) : (
-                          <Dropdown>
-                            <Dropdown.Toggle variant="outline-primary">
-                              {'Select a Tag'}
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu>
-                              {tagsList?.filter(tag => !tags.includes(tag)).map((tag, index) => (
-                                <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
-                                  {tag.name}
-                                </Dropdown.Item>
-                              ))}
-                            </Dropdown.Menu>
-                          </Dropdown>
-                        )}
-                      </div>
-                      {/* Display added tags */}
-                      <div className="tags-list">
-                        {tags.map((tag, index) => (
-                          <span key={tag._id} className="tag-item">
-                            #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
-                          </span>
-                        ))}
-                      </div>
-                    </Form.Group>
+                      <Col ms={5}>
+                        <Form.Group controlId="description">
+                          <Form.Label>Description</Form.Label>
+                          <Form.Control as="textarea" rows={3} placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                        </Form.Group>
+                      </Col>
+                    </Row>
 
 
-                    {/* Image Upload */}
-                    <Form.Group controlId="image">
-                      <Form.Label>Images</Form.Label>
-                      <Form.Control
-                        type="file"
-                        multiple
-                        onChange={handleImageUpload}
-                      />
-                    </Form.Group>
+                    <Row className="mt-4">
+                      <Col ms={5}>
+                        <Form.Group controlId="type">
+                          <Form.Label>Type</Form.Label>
+                          <div className="d-flex">
+                            <Form.Check type="radio" id="product" label="Product" name="type" checked={type === 'product'} onChange={() => setType('product')} />
+                            <Form.Check type="radio" id="service" label="Service" name="type" checked={type === 'service'} onChange={() => setType('service')} />
+                          </div>
+                        </Form.Group>
+                      </Col>
 
-                    <div className="image-gallery">
-                      {imageList.length > 0 ? (
-                        <Row>
-                          {imageList.map((imgUrl, index) => (
-                            <Col key={index} xs={6} sm={4} md={3}>
-                              <div className="image-item">
-                                <img src={imgUrl} alt={`uploaded-${index}`} className="thumbnail" />
-                                <Button variant="danger" size="sm" onClick={() => removeImage(imgUrl)}>
-                                  X
-                                </Button>
+                      <Col ms={5}>
+                        <Form.Group controlId="price">
+                          <Form.Label>Price</Form.Label>
+                          <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4">
+                      <Col ms={5}>
+                        <Form.Group controlId="category">
+                          <Form.Label>Category</Form.Label>
+                          <Form.Control as="select" value={category} onChange={(e) => { setCategory(e.target.value) }} required >
+                            <option value="">Select a category</option>
+                            {!categoriesLoading && categories?.map((cat) => (
+                              <option key={cat._id} value={cat._id}> {cat.name} </option>
+                            ))}
+                          </Form.Control>
+                        </Form.Group>
+                      </Col>
+
+                      <Col ms={5}>
+                        <Form.Group controlId="tags" className="tag-input-container">
+                          <Form.Label>Tags</Form.Label>
+                          <div>
+                            {tagsLoading ? (
+                              <p>Loading tags...</p>
+                            ) : (
+                              <Dropdown>
+                                <Dropdown.Toggle variant="outline-primary">
+                                  {'Select a Tag'}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                  {tagsList?.filter(tag => !tags.includes(tag)).map((tag, index) => (
+                                    <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
+                                      {tag.name}
+                                    </Dropdown.Item>
+                                  ))}
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            )}
+                          </div>
+                          <div className="tags-list">
+                            {tags.map((tag, index) => (
+                              <div className='span'>
+                                <div key={tag._id} className="tag-item">
+                                  #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
+                                </div>
                               </div>
-                            </Col>
-                          ))}
-                        </Row>
-                      ) : (
-                        <p>No images uploaded yet.</p>
-                      )}
+                            ))}
+                          </div>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+
+                    <Row className="mt-4">
+                      <Col ms={5}>
+                        <Form.Group controlId="image">
+                          <Form.Label>Images</Form.Label>
+                          <Form.Control type="file" multiple onChange={handleImageUpload} />
+                        </Form.Group>
+
+                        <div className="image-gallery">
+                          {imageList.length > 0 ? (
+                            <Row className="mt-4">
+                              {imageList.map((imgUrl, index) => (
+                                <Col key={index} xs={6} sm={4} md={3}>
+                                  <div className="image-item">
+                                    <img src={imgUrl} alt={`uploaded-${index}`} className="thumbnail" />
+                                    <Button variant="danger" size="sm" onClick={() => removeImage(imgUrl)}>
+                                      X
+                                    </Button>
+                                  </div>
+                                </Col>
+                              ))}
+                            </Row>
+                          ) : (
+                            <p>No images uploaded yet.</p>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+
+                    <div className='center'>
+                      <Button type="submit" variant="primary" disabled={isLoading}>
+                        {isLoading ? 'Adding...' : 'Add Product/Service'}
+                      </Button>
                     </div>
-
-
-                    <Button type="submit" variant="primary" disabled={isLoading}>
-                      {isLoading ? 'Adding...' : 'Add Product/Service'}
-                    </Button>
                   </Form>
                 )}
 
                 {activeSection === 'product' && (
-                  <>
-                    {editProduct && (
-                      <Form onSubmit={(e) => handleUpdateProduct(editProduct._id, e)}>
-
-                        <button onClick={() => cancelHandle()}>Cancel</button>
-
-                        <Form.Group controlId="description">
-                          <Form.Label>Description</Form.Label>
-                          <Form.Control
-                            as="textarea"
-                            rows={3}
-                            placeholder="Enter description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-
-                        <Form.Group controlId="price">
-                          <Form.Label>Price</Form.Label>
-                          <Form.Control
-                            type="number"
-                            placeholder="Enter price"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-
-                        <Form.Group controlId="category">
-                          <Form.Label>Category</Form.Label>
-                          <Form.Control
-                            as="select"
-                            value={category}
-                            onChange={(e) => { setCategory(e.target.value); setTags([]); }}
-                            required
-                          >
-                            <option value="">Select a category</option>
-                            {!categoriesLoading &&
-                              categories?.map((cat) => (
-                                <option key={cat._id} value={cat._id}>
-                                  {cat.name}
-                                </option>
-                              ))}
-                          </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group controlId="tags">
-                          <Form.Label>Tags</Form.Label>
-                          <div className="tag-input-container">
-                            {tagsLoading ? (
-                              <p>Loading tags...</p>
-                            ) : (
-                              <Dropdown>
-                                <Dropdown.Toggle variant="outline-primary">
-                                  {'Select a Tag'}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {tagsList?.filter(tag => !tags.includes(tag)).map((tag) => (
-                                    <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
-                                      {tag.name}
-                                    </Dropdown.Item>
-                                  ))}
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            )}
+                  <div className="list">
+                    {isLoading ? (
+                      <p>Loading products...</p>
+                    ) : productError ? (
+                      <p>Error loading products.</p>
+                    ) : products && products.length > 0 ? (
+                      products.map((product) => (
+                        <div key={product._id} className="item">
+                          <div className="actions">
+                            <button onClick={() => handleDelete(product._id)}>Delete</button>
+                            <button onClick={() => { setShowPopup(true); handleUpdate(product); }}>Update</button>
                           </div>
-                          <div className="tags-list">
-                            {tags.map((tag) => (
-                              <span key={tag._id} className="tag-item">
-                                #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
-                              </span>
-                            ))}
-                          </div>
-                        </Form.Group>
-
-                        <Button type="submit" variant="primary" disabled={isLoading}>
-                          {isLoading ? 'Updating...' : 'Update Product'}
-                        </Button>
-                      </Form>
+                          <h3>{product.title}</h3>
+                          <p><div className='span'>Description : </div>{product.description}</p>
+                          <p><div className='span'>Type : </div>{product.type}</p>
+                          <p><div className='span'>Price: </div>{product.price} DH</p>
+                          <p><div className='span'>Category : </div>{product.category.name}</p>
+                          <p><div className='span'>Tags:</div></p>
+                          <ul>
+                            {product.tags && product.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
+                          </ul>
+                          <div className='span'>Gallery:</div>
+                          <ul>
+                            {product.Image && product.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
+                          </ul>
+                          <p><div className='span'>Created the : </div>{new Date(product.dateCreated).toLocaleDateString()}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No products available</p>
                     )}
-
-                    <div className="list">
-                      {isLoading ? (
-                        <p>Loading products...</p>
-                      ) : productError ? (
-                        <p>Error loading products.</p>
-                      ) : products && products.length > 0 ? (
-                        products.map((product) => (
-                          <div key={product._id} className="item">
-                            <div className="actions">
-                              <button onClick={() => handleDelete(product._id)}>Delete</button>
-                              <button onClick={() => handleUpdate(product)}>Update</button>
-                            </div>
-                            <h3>{product.title}</h3>
-                            <p>Description : {product.description}</p>
-                            <p>Type : {product.type}</p>
-                            <p>Gallery:</p>
-                            <ul>
-                              {product.Image && product.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                            </ul>
-                            <p>Tags:</p>
-                            <ul>
-                              {product.tags && product.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
-                            </ul>
-                            <p>Category : {product.category.name}</p>
-                            <p>Created the :  {new Date(product.dateCreated).toLocaleDateString()}</p>
-                            <p>Price: {product.price} DH</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No products available</p>
-                      )}
-                    </div>
-                  </>
+                  </div>
                 )}
 
                 {activeSection === 'service' && (
-                  <>
-                    {editProduct && (
-                      <Form onSubmit={(e) => handleUpdateProduct(editProduct._id, e)}>
-
-                        <button onClick={() => cancelHandle()}>Cancel</button>
-
-                        <Form.Group controlId="description">
-                          <Form.Label>Description</Form.Label>
-                          <Form.Control
-                            as="textarea"
-                            rows={3}
-                            placeholder="Enter description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-
-                        <Form.Group controlId="price">
-                          <Form.Label>Price</Form.Label>
-                          <Form.Control
-                            type="number"
-                            placeholder="Enter price"
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                            required
-                          />
-                        </Form.Group>
-
-                        <Form.Group controlId="category">
-                          <Form.Label>Category</Form.Label>
-                          <Form.Control
-                            as="select"
-                            value={category}
-                            onChange={(e) => { setCategory(e.target.value); setTags([]); }}
-                            required
-                          >
-                            <option value="">Select a category</option>
-                            {!categoriesLoading &&
-                              categories?.map((cat) => (
-                                <option key={cat._id} value={cat._id}>
-                                  {cat.name}
-                                </option>
-                              ))}
-                          </Form.Control>
-                        </Form.Group>
-
-                        <Form.Group controlId="tags">
-                          <Form.Label>Tags</Form.Label>
-                          <div className="tag-input-container">
-                            {tagsLoading ? (
-                              <p>Loading tags...</p>
-                            ) : (
-                              <Dropdown>
-                                <Dropdown.Toggle variant="outline-primary">
-                                  {'Select a Tag'}
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {tagsList?.filter(tag => !tags.includes(tag)).map((tag) => (
-                                    <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
-                                      {tag.name}
-                                    </Dropdown.Item>
-                                  ))}
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            )}
+                  <div className="list">
+                    {isLoading ? (
+                      <p>Loading services...</p>
+                    ) : serviceError ? (
+                      <p>Error loading services.</p>
+                    ) : services && services.length > 0 ? (
+                      services.map((service) => (
+                        <div key={service._id} className="item">
+                          <div className="actions">
+                            <button onClick={() => handleDelete(service._id)}>Delete</button>
+                            <button onClick={() => { setShowPopup(true); handleUpdate(service); }}>Update</button>
                           </div>
-                          <div className="tags-list">
-                            {tags.map((tag) => (
-                              <span key={tag._id} className="tag-item">
-                                #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
-                              </span>
-                            ))}
-                          </div>
-                        </Form.Group>
-
-                        <Button type="submit" variant="primary" disabled={isLoading}>
-                          {isLoading ? 'Updating...' : 'Update Product'}
-                        </Button>
-                      </Form>
+                          <h3>{service.title}</h3>
+                          <p><div className='span'>Description : </div>{service.description}</p>
+                          <p><div className='span'>Type : </div>{service.type}</p>
+                          <p><div className='span'>Price: </div>{service.price} DH</p>
+                          <p><div className='span'>Category : </div>{service.category.name}</p>
+                          <p><div className='span'>Tags:</div></p>
+                          <ul>
+                            {service.tags && service.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
+                          </ul>
+                          <div className='span'>Gallery:</div>
+                          <ul>
+                            {service.Image && service.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
+                          </ul>
+                          <p><div className='span'>Created the : </div>{new Date(service.dateCreated).toLocaleDateString()}</p>
+                        </div>
+                      ))
+                    ) : (
+                      <p>No services available</p>
                     )}
-
-                    <div className="list">
-                      {isLoading ? (
-                        <p>Loading services...</p>
-                      ) : serviceError ? (
-                        <p>Error loading services.</p>
-                      ) : services && services.length > 0 ? (
-                        services.map((service) => (
-                          <div key={service._id} className="item">
-                            <div className="actions">
-                              <button onClick={() => handleDelete(service._id)}>Delete</button>
-                              <button onClick={() => handleUpdate(service)}>Update</button>
-                            </div>
-                            <h3>{service.title}</h3>
-                            <p>Description : {service.description}</p>
-                            <p>Type : {service.type}</p>
-                            <p>Gallery:</p>
-                            <ul>
-                              {service.Image && service.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                            </ul>
-                            <p>Tags:</p>
-                            <ul>
-                              {service.tags && service.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
-                            </ul>
-                            <p>Category : {service.category.name}</p>
-                            <p>Created the :  {new Date(service.dateCreated).toLocaleDateString()}</p>
-                            <p>Price: {service.price} DH</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No services available</p>
-                      )}
-                    </div>
-                  </>
+                  </div>
                 )}
               </div>
             </FormContainer>
           </div>
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   );
 };

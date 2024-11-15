@@ -1,4 +1,20 @@
 :root {
+  --green-light: #80F2B5;
+  --green-medium: #73D6BA;
+  --green-dark: #49A993;
+  /* --green-light: #A1E6D1;
+  --green-dark: #4CA798; */
+  --red-dark: #E57376;
+  --red-medium: #FF686D;
+  --red-light: #FF7075;
+  --link: #AEB4B7;
+  --active-link: #73D6BA;
+  --hover-link: #BFC2C4;
+  --light: #000000;
+  --dark: #ffffff;
+}
+
+[data-theme='dark'] {
   --green-light: #00DF82;
   --green-medium: #2CC295;
   --green-dark: #03624C;
@@ -8,6 +24,8 @@
   --link: #6c757d;
   --active-link: #2CC295;
   --hover-link: #979899;
+  --light: #ffffff;
+  --dark: #000000;
 }
 
 @font-face {
@@ -56,14 +74,43 @@ h6 {
   margin-bottom: .5rem;
 }
 
+[data-theme='dark'] .h1,
+[data-theme='dark'] .h2,
+[data-theme='dark'] .h3,
+[data-theme='dark'] .h4,
+[data-theme='dark'] .h5,
+[data-theme='dark'] .h6,
+[data-theme='dark'] h1,
+[data-theme='dark'] h2,
+[data-theme='dark'] h3,
+[data-theme='dark'] h4,
+[data-theme='dark'] h5,
+[data-theme='dark'] h6,
+[data-theme='dark'] p {
+  color: white;
+  line-height: 1.2;
+  margin-top: 0;
+  margin-bottom: .5rem;
+}
+
 html {
   height: auto;
   margin: 0;
   padding: 0;
 }
 
-body {
-  background: linear-gradient(to bottom, black 0%, black 10%, black 25%, var(--green-dark) 100%, var(--green-dark) 80%, var(--green-dark) 60%, var(--green-dark) 40%, var(--green-light) 40%, var(--green-light) 20%);
+[data-theme='light'] body {
+  background: white;
+  color: black;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  min-height: 100%;
+  height: auto;
+  padding: 1rem, 0;
+}
+
+[data-theme='dark'] body  {
+  background: linear-gradient(to bottom, black 0%, var(--green-dark) 100%, var(--green-dark) 90%, var(--green-medium) 80%, var(--green-medium) 70%, var(--green-medium) 60%, var(--green-light) 50%, var(--green-light) 40%, var(--green-light) 30%);
   color: white;
   font-family: Arial, sans-serif;
   margin: 0;

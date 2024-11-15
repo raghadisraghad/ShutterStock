@@ -28,10 +28,6 @@ const ProfileButtons = () => {
           <Button onClick={() => handleRedirect('/collections')} className="button-custom">
             Collections
           </Button>
-
-          <Button onClick={() => handleRedirect('/contact')} className="button-custom">
-            Contact
-          </Button>
         </>
       ) : null}
 

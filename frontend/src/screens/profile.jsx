@@ -238,14 +238,14 @@ const Profile = () => {
                 {activeSection === 'profile' && (
                   <>
                     <Row>
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId="firstName" className="my-2">
                           <Form.Label>First Name</Form.Label>
                           <Form.Control type="text" placeholder="Enter first name" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                         </Form.Group>
                       </Col>
 
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId="lastName" className="my-2">
                           <Form.Label>Last Name</Form.Label>
                           <Form.Control type="text" placeholder="Enter last name" value={lastName} onChange={(e) => setLastName(e.target.value)} />
@@ -254,14 +254,14 @@ const Profile = () => {
                     </Row>
 
                     <Row>
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId="username" className="my-2">
                           <Form.Label>Username</Form.Label>
                           <Form.Control type="text" placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)} />
                         </Form.Group>
                       </Col>
 
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId="email" className="my-2">
                           <Form.Label>Email Address</Form.Label>
                           <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -270,7 +270,7 @@ const Profile = () => {
                     </Row>
 
                     <Row>
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId="tel">
                           <Form.Label>Telephone</Form.Label>
                           <Form.Control type="text" value={tel} onChange={handleTelChange} placeholder="Enter your phone number" />
@@ -282,7 +282,7 @@ const Profile = () => {
                         </Form.Group>
                       </Col>
 
-                      <Col md={5}>
+                      <Col ms={5}>
                         <Form.Group controlId='birthDate' className="inputBirthDay" >
                           <Form.Label>Birth Date</Form.Label>
                           <DatePicker selected={birthDate} onChange={handleDateChange} maxDate={subYears(new Date(), 13)} minDate={subYears(new Date(), 80)} placeholderText="Select birth date" showYearDropdown dateFormat="dd/MM/yyyy" />
@@ -301,7 +301,7 @@ const Profile = () => {
                         </Form.Group>
 
                         <Row>
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group controlId='materials'>
                               <Form.Label>Materials</Form.Label>
                               <div className="d-flex">
@@ -320,7 +320,7 @@ const Profile = () => {
                             </Form.Group>
                           </Col>
 
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group className='my-2' controlId='instagram'>
                               <Form.Label>Instagram</Form.Label>
                               <Form.Control type='text' value={instagram} onChange={(e) => setInstagram(e.target.value)} />
@@ -329,14 +329,14 @@ const Profile = () => {
                         </Row>
 
                         <Row>
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group className='my-2' controlId='linkedin'>
                               <Form.Label>Linkedin</Form.Label>
                               <Form.Control type='text' value={linkedin} onChange={(e) => setLinkedin(e.target.value)} />
                             </Form.Group>
                           </Col>
 
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group className='my-2' controlId='facebook'>
                               <Form.Label>Facebook</Form.Label>
                               <Form.Control type='text' value={facebook} onChange={(e) => setFacebook(e.target.value)} />
@@ -345,14 +345,14 @@ const Profile = () => {
                         </Row>
 
                         <Row>
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group className='my-2' controlId='x'>
                               <Form.Label>X</Form.Label>
                               <Form.Control type='text' value={x} onChange={(e) => setX(e.target.value)} />
                             </Form.Group>
                           </Col>
 
-                          <Col md={5}>
+                          <Col ms={5}>
                             <Form.Group className='my-2' controlId='youtube'>
                               <Form.Label>Youtube</Form.Label>
                               <Form.Control type='text' value={youtube} onChange={(e) => setYoutube(e.target.value)} />
@@ -360,7 +360,7 @@ const Profile = () => {
                           </Col>
                         </Row>
 
-                        <Col md={5}>
+                        <Col ms={5}>
                           <Form.Group className='my-2' controlId='website'>
                             <Form.Label>Website</Form.Label>
                             <Form.Control type='text' value={website} onChange={(e) => setWebsite(e.target.value)} />
