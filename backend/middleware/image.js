@@ -12,7 +12,7 @@ if (!fs.existsSync(uploadDirectory)) {
   fs.mkdirSync(uploadDirectory, { recursive: true });
 }
 
-if (!fs.existsSync(uploadProductDirectory)) {
+if (!fs.existsSync(uploadProductDirectory)) { 
   fs.mkdirSync(uploadProductDirectory, { recursive: true });
 }
 

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Form } from 'react-bootstrap';
 
 const PasswordValidator = ({ password, setPassword, showErrorMessage = true }) => {
     const [isValid, setIsValid] = useState(true);
@@ -36,13 +37,16 @@ const PasswordValidator = ({ password, setPassword, showErrorMessage = true }) =
     };
 
     return (
-        <div className="password-input-container">
-            <input type={isPasswordVisible ? 'text' : 'password'} placeholder='Enter password...' value={password} onChange={handleChange} className='input' required />
+        <Form.Group controlId="password">
+            <div className="password">
+                <Form.Label>New Password</Form.Label>
+                <Form.Control type={isPasswordVisible ? 'text' : 'password'} placeholder="Enter New Password..." value={password} onChange={handleChange} />
+                <span onClick={togglePasswordVisibility} className="password-toggle">
+                    {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
+                </span>
+            </div>
             {showErrorMessage && !isValid && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <span onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }} className="password-toggle" >
-                {isPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-            </span>
-        </div>
+        </Form.Group>
     );
 };
 

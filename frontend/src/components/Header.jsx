@@ -41,21 +41,33 @@ const Header = () => {
           <Navbar.Collapse id='basic-navbar-nav'>
 
             <Nav className='ms-auto'>
-              <LinkContainer to={'/about'}>
-                <Nav.Link>About</Nav.Link>
+
+              <LinkContainer to={'/products'}>
+                <Nav.Link>Products</Nav.Link>
               </LinkContainer>
 
               <LinkContainer to={'/services'}>
                 <Nav.Link>Services</Nav.Link>
               </LinkContainer>
 
-              <LinkContainer to={'/how_it_works'}>
-                <Nav.Link>How It Works</Nav.Link>
-              </LinkContainer>
+              <NavDropdown title='About' id='About'>
+                <LinkContainer to={'/about'}>
+                  <Nav.Link>About Us</Nav.Link>
+                </LinkContainer>
 
-              <LinkContainer to={'/products'}>
-                <Nav.Link>Products</Nav.Link>
-              </LinkContainer>
+                <LinkContainer to={'/how_it_works'}>
+                  <Nav.Link>How It Works</Nav.Link>
+                </LinkContainer>
+              </NavDropdown>
+
+              {userInfo ? (
+                <LinkContainer to={'/dashboard'}>
+                  <Nav.Link>Dashboard</Nav.Link>
+                </LinkContainer>
+              ) : (
+                <></> 
+              )}
+
             </Nav>
 
             <Nav className='ms-auto'>
@@ -63,6 +75,18 @@ const Header = () => {
                 <NavDropdown title={userInfo.username} id='username'>
                   <LinkContainer to='/profile'>
                     <NavDropdown.Item>Profile</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/myProducts'>
+                    <NavDropdown.Item>My Products</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/portfolio'>
+                    <NavDropdown.Item>Portfolio</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/orders'>
+                    <NavDropdown.Item>My Orders</NavDropdown.Item>
                   </LinkContainer>
 
                   <LinkContainer to='/setting'>

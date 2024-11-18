@@ -199,7 +199,6 @@ const Profile = () => {
 
   return (
     <>
-      <Button onClick={() => navigate('/profile')} className="button-custom"> Back </Button>
       <div className="profile-container">
         <div className="sidebar">
           <h5>Settings</h5>
@@ -384,12 +383,8 @@ const Profile = () => {
                       </div>
                     </Form.Group>
 
-                    <Form.Group controlId="password">
-                      <div className="password">
-                        <Form.Label>New Password</Form.Label>
-                        <PasswordValidator password={newPassword} setPassword={setNewPassword} />
-                      </div>
-                    </Form.Group>
+                    
+                    <PasswordValidator password={newPassword} setPassword={setNewPassword} />
 
                     <Form.Group controlId="confirmPassword" className="my-2">
                       <div className="password-input-container">

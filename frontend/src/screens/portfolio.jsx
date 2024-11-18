@@ -10,7 +10,6 @@ const portfolio = () => {
 
   return (
     <>
-      <Button onClick={() => navigate('/profile')} className="button-custom"> Back </Button>
       <h1>portfolio</h1>
     </>
   )

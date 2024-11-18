@@ -10,11 +10,10 @@ import { useUploadProductImageMutation } from '../slices/imageApiSlice';
 import { skipToken } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
 
-const Collections = () => {
-  const [activeSection, setActiveSection] = useState('collections');
+const myProducts = () => {
+  const [activeSection, setActiveSection] = useState('myProducts');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [type, setType] = useState('product');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState([]);
@@ -102,7 +101,7 @@ const Collections = () => {
       await deleteProduct({ id }).unwrap();
       toast.success('Product Deleted successfully!', { autoClose: 1000, });
       window.location.reload();
-      navigate('/collections');
+      navigate('/myProducts');
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
     }
@@ -157,7 +156,7 @@ const Collections = () => {
       const productData = {
         title,
         description,
-        type,
+        type: 'product',
         price: parseFloat(price),
         Image: list.length > 0 ? list : [],
         vendor: userInfo._id,
@@ -167,7 +166,7 @@ const Collections = () => {
 
       await addProduct({ productData }).unwrap();
       toast.success('Product Added successfully!', { autoClose: 1000, });
-      navigate('/collections');
+      navigate('/myProducts');
       window.location.reload();
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
@@ -176,8 +175,7 @@ const Collections = () => {
 
   return (
     <>
-      <Button onClick={() => navigate('/profile')} className="button-custom">Back</Button>
-      <h1>Collections</h1>
+      <h1>myProducts</h1>
       <div className="profile-container">
         {(activeSection === 'product' || activeSection === 'service') && (
           <>
@@ -257,13 +255,10 @@ const Collections = () => {
           <h5>Settings</h5>
           <Nav className="flex-column">
             <Nav.Link onClick={() => { setActiveSection('addProduct'); cancelHandle(); }} active={activeSection === 'addProduct'}>
-              Add Product/Service
+              Add Product
             </Nav.Link>
             <Nav.Link onClick={() => { setActiveSection('product'); cancelHandle(); }} active={activeSection === 'product'}>
               List Products
-            </Nav.Link>
-            <Nav.Link onClick={() => { setActiveSection('service'); cancelHandle(); }} active={activeSection === 'service'}>
-              List Services
             </Nav.Link>
           </Nav>
         </div>
@@ -274,7 +269,7 @@ const Collections = () => {
               <div className="profileHeader">
                 {activeSection === 'addProduct' && (
                   <Form onSubmit={handleAddProduct}>
-                    <h1>Create a Product/Service</h1>
+                    <h1>Create a Product</h1>
 
                     <Row className="mt-4">
                       <Col ms={5}>
@@ -288,26 +283,6 @@ const Collections = () => {
                         <Form.Group controlId="description">
                           <Form.Label>Description</Form.Label>
                           <Form.Control as="textarea" rows={3} placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                        </Form.Group>
-                      </Col>
-                    </Row>
-
-
-                    <Row className="mt-4">
-                      <Col ms={5}>
-                        <Form.Group controlId="type">
-                          <Form.Label>Type</Form.Label>
-                          <div className="d-flex">
-                            <Form.Check type="radio" id="product" label="Product" name="type" checked={type === 'product'} onChange={() => setType('product')} />
-                            <Form.Check type="radio" id="service" label="Service" name="type" checked={type === 'service'} onChange={() => setType('service')} />
-                          </div>
-                        </Form.Group>
-                      </Col>
-
-                      <Col ms={5}>
-                        <Form.Group controlId="price">
-                          <Form.Label>Price</Form.Label>
-                          <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
                         </Form.Group>
                       </Col>
                     </Row>
@@ -385,6 +360,13 @@ const Collections = () => {
                           )}
                         </div>
                       </Col>
+
+                      <Col ms={5}>
+                        <Form.Group controlId="price">
+                          <Form.Label>Price</Form.Label>
+                          <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                        </Form.Group>
+                      </Col>
                     </Row>
 
                     <div className='center'>
@@ -429,41 +411,6 @@ const Collections = () => {
                     )}
                   </div>
                 )}
-
-                {activeSection === 'service' && (
-                  <div className="list">
-                    {isLoading ? (
-                      <p>Loading services...</p>
-                    ) : serviceError ? (
-                      <p>Error loading services.</p>
-                    ) : services && services.length > 0 ? (
-                      services.map((service) => (
-                        <div key={service._id} className="item">
-                          <div className="actions">
-                            <button onClick={() => handleDelete(service._id)}>Delete</button>
-                            <button onClick={() => { setShowPopup(true); handleUpdate(service); }}>Update</button>
-                          </div>
-                          <h3>{service.title}</h3>
-                          <p><div className='span'>Description : </div>{service.description}</p>
-                          <p><div className='span'>Type : </div>{service.type}</p>
-                          <p><div className='span'>Price: </div>{service.price} DH</p>
-                          <p><div className='span'>Category : </div>{service.category.name}</p>
-                          <p><div className='span'>Tags:</div></p>
-                          <ul>
-                            {service.tags && service.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
-                          </ul>
-                          <div className='span'>Gallery:</div>
-                          <ul>
-                            {service.Image && service.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                          </ul>
-                          <p><div className='span'>Created the : </div>{new Date(service.dateCreated).toLocaleDateString()}</p>
-                        </div>
-                      ))
-                    ) : (
-                      <p>No services available</p>
-                    )}
-                  </div>
-                )}
               </div>
             </FormContainer>
           </div>
@@ -473,4 +420,4 @@ const Collections = () => {
   );
 };
 
-export default Collections;
+export default myProducts;

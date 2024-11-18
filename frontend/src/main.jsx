@@ -5,7 +5,6 @@ import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom';
-import ProfileButtons from './components/ProfileButtons.jsx';
 import PrivateRoute from './components/PrivateRoute.jsx';
 import RoleRoute from './components/RoleRoute.jsx';
 import App from './App.jsx';
@@ -21,7 +20,7 @@ const HowItWorksScreen = lazy(() => import('./screens/howItWorks.jsx'));
 const ProductsScreen = lazy(() => import('./screens/products.jsx'));
 const PortfolioScreen = lazy(() => import('./screens/portfolio.jsx'));
 const OrdersScreen = lazy(() => import('./screens/orders.jsx'));
-const CollectionScreen = lazy(() => import('./screens/collections.jsx'));
+const MyProductsScreen = lazy(() => import('./screens/myProducts.jsx'));
 const ContactScreen = lazy(() => import('./screens/contact.jsx'));
 const SettingsScreen = lazy(() => import('./screens/settings.jsx'));
 const PolicyAndTermsScreen = lazy(() => import('./screens/policyAndTerms.jsx'));
@@ -43,19 +42,16 @@ const router = createBrowserRouter(
         {/* Protected Routes */}
         <Route element={<PrivateRoute />}>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileButtons /></Suspense>} />
+            <Route path='/profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
             <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><SettingsScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/update' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
-          </Route>
-          <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
             <Route path='/orders' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><OrdersScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
-            <Route path='/collections' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><CollectionScreen /></Suspense>} />
+            <Route path='/myProducts' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><MyProductsScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
             <Route path='/contact' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ContactScreen /></Suspense>} />

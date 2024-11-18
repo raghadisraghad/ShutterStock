@@ -18,7 +18,6 @@ const orders = () => {
 
   return (
     <>
-      <Button onClick={() => navigate('/profile')} className="button-custom">Back</Button>
       <h1>Orders</h1>
       <div className="profile-container">
         <div className="sidebar">

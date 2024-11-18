@@ -386,7 +386,7 @@ hr {
     border-radius: 5px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
-    color: var(--dark);
+    color: var(--light);
     width: 100%;
     transition: border-color 0.5s ease;
 }
@@ -475,6 +475,11 @@ hr {
     margin: 2rem;
     border-radius: 20px;
     color: var(--light);
+}
+
+.registerRole{
+    display: flex;
+    gap: 1rem;
 }
 
 .register a,
