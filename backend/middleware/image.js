@@ -16,6 +16,14 @@ if (!fs.existsSync(uploadProductDirectory)) {
   fs.mkdirSync(uploadProductDirectory, { recursive: true });
 }
 
+const fileFilter = (req, file, cb) => {
+  if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype)) {
+    return cb(new Error('Only JPEG and JPG and PNG images are allowed'), false);
+  }
+
+  cb(null, true);
+};
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDirectory);
@@ -25,13 +33,17 @@ const storage = multer.diskStorage({
   }
 });
 
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 20 * 1024 * 1024
+  },
+  fileFilter
+});
+
 const storage2 = multer.diskStorage({
   destination: (req, file, cb) => {
     const userId = req.params.id;
-
-    if (!userId) {
-      return cb(new Error('User ID is required'), false);
-    }
 
     const userDirectory = path.join(uploadProductDirectory, userId.toString());
     if (!fs.existsSync(userDirectory)) {
@@ -45,24 +57,8 @@ const storage2 = multer.diskStorage({
   }
 });
 
-const fileFilter = (req, file, cb) => {
-  if (!['image/jpeg', 'image/jpg', 'image/png'].includes(file.mimetype)) {
-    return cb(new Error('Only JPEG and JPG and PNG images are allowed'), false);
-  }
-
-  cb(null, true);
-};
-
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 20 * 1024 * 1024
-  },
-  fileFilter
-});
-
 const productImageUpload = multer({
-  storage2,
+  storage: storage2,
   limits: {
     fileSize: 20 * 1024 * 1024
   },

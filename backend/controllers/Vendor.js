@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Target from '../models/User.js';
+import Product from '../models/Product.js';
 import bcrypt from 'bcryptjs';
 
 
@@ -48,11 +49,37 @@ const update = asyncHandler(async (req, res) => {
 const deleteC = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const target = await Target.findByIdAndDelete(id);
+
     if (!target) {
         res.status(404).json({ message: "Target Doesn't Exist !!!" })
     }
+    
+    try {
+        await Product.deleteMany({ vendor: id });
+        res.status(200).json({ message: "Target and associated data deleted successfully" });
+    } catch (err) {
+        res.status(500).json({ message: "Error deleting associated data", error: err.message });
+    }
+
+    const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Products');
+    const userDirectory = path.join(uploadProductDirectory, id.toString());
+    if (fs.existsSync(userDirectory)) {
+        if (fs.existsSync(userDirectory)) {
+            fs.rm(userDirectory, { recursive: true, force: true }, (err) => {
+                if (err) {
+                    console.error('Error deleting folder:', err);
+                    return;  
+                }
+                console.log('Folder deleted successfully');
+            });
+        } else {
+            console.log('User directory not found.');
+        }
+    }
+
     res.status(200).json({ message: "Target Deleted Successfully" })
 });
+
 
 export {
     add,

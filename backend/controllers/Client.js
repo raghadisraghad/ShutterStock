@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import Target from '../models/User.js';
 import bcrypt from 'bcryptjs';
+import fs from 'fs';
 
 const getAll = asyncHandler(async (req, res) => {
     const target = await Target.find({ role: '1' });
@@ -41,19 +42,19 @@ const update = asyncHandler(async (req, res) => {
         return res.status(400).send({ error: 'Username Already In Use' });
     }
 
-    if(updateData.currentPassword){
+    if (updateData.currentPassword) {
         const isPasswordValid = await bcrypt.compare(updateData.currentPassword, targetCheck.password);
-        if(isPasswordValid){
+        if (isPasswordValid) {
             if (updateData.password && updateData.password !== targetCheck.password) {
                 updateData.password = await bcrypt.hash(updateData.password, 10);
             }
-            else{
+            else {
                 updateData.password = targetCheck.password;
             }
-        }else
+        } else
             return res.status(400).send({ error: 'Current Password Not correct' });
     }
-    
+
     const target = await Target.findByIdAndUpdate(id, updateData, { new: true });
     res.status(200).json({ message: "Updated Successfully", user: target });
 });
@@ -61,9 +62,21 @@ const update = asyncHandler(async (req, res) => {
 const deleteC = asyncHandler(async (req, res) => {
     const { id } = req.params;
     const target = await Target.findByIdAndDelete(id);
+
     if (!target) {
         res.status(404).json({ message: "Target Doesn't Exist !!!" })
     }
+
+    if (fs.existsSync(target.avatar)) {
+        fs.unlink(target.avatar, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+                return;
+            }
+            console.log('File deleted successfully');
+        });
+    }
+
     res.status(200).json({ message: "Target Deleted Successfully" })
 });
 

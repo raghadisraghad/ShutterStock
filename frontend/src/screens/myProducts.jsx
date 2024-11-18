@@ -42,7 +42,6 @@ const myProducts = () => {
   }, [category, tagsData]);
 
   const handleUpdate = (model) => {
-    console.log("tags", model.tags);
     setEditProduct(model);
     setTitle(model.title);
     setDescription(model.description);
@@ -66,18 +65,6 @@ const myProducts = () => {
     return <div>Loading categories...</div>;
   }
 
-  const handleImageUpload = (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      const uploadedImages = Array.from(files).map(file => URL.createObjectURL(file));
-      setImageList(prevImages => {
-        const newImageList = [...prevImages, ...uploadedImages];
-        console.log("imageList", imageList);
-        return newImageList;
-      });
-    }
-  };
-
   const removeImage = (imageUrl) => {
     setImageList(imageList.filter((img) => img !== imageUrl));
   };
@@ -97,7 +84,6 @@ const myProducts = () => {
       const isConfirmed = window.confirm('Are you sure you want to delete this product?');
 
       if (!isConfirmed) return;
-      console.log(id);
       await deleteProduct({ id }).unwrap();
       toast.success('Product Deleted successfully!', { autoClose: 1000, });
       window.location.reload();
@@ -131,34 +117,46 @@ const myProducts = () => {
     }
   };
 
+  const handleImageUpload = (e) => {
+    const files = e.target.files;
+    if (files.length > 0) {
+      setImageList(prevImages => {
+        const newImageList = [...prevImages, ...Array.from(files)];
+        return newImageList;
+      });
+    }
+  };
+
   const handleAddProduct = async (e) => {
     e.preventDefault();
 
     try {
       let list = [];
-      // if (imageList && imageList.length > 0) {
-      //   const formData = new FormData();
-      //   imageList.forEach((file) => {
-      //     console.log("File being uploaded:", file);
-      //     if (file instanceof File) {
-      //       formData.append('pictures', file);
-      //     }
-      //   });
 
-      //   try {
-      //     const uploadResponse = await uploadProductImages({ id: userInfo._id, formData }).unwrap();
-      //     list.push(...uploadResponse.imageUrls);
-      //   } catch (err) {
-      //     console.error("Error uploading images:", err);
-      //   }
-      // }
+      if (imageList && imageList.length > 0) {
+        const files = new FormData();
+
+        imageList.forEach((file) => {
+          if (file instanceof File) {
+            files.append('pictures', file);
+          }
+        });
+
+        try {
+          const uploadResponse = await uploadProductImages({ id: userInfo._id, files: files }).unwrap();
+          list.push(...uploadResponse.imageUrls);
+        } catch (err) {
+          toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
+          return
+        }
+      }
 
       const productData = {
         title,
         description,
         type: 'product',
         price: parseFloat(price),
-        Image: list.length > 0 ? list : [],
+        pictures: list,
         vendor: userInfo._id,
         tags: tags.map((tag) => tag._id),
         category,
@@ -338,17 +336,17 @@ const myProducts = () => {
                       <Col ms={5}>
                         <Form.Group controlId="image">
                           <Form.Label>Images</Form.Label>
-                          <Form.Control type="file" multiple onChange={handleImageUpload} />
+                          <Form.Control type="file" multiple onChange={handleImageUpload} required/>
                         </Form.Group>
 
                         <div className="image-gallery">
                           {imageList.length > 0 ? (
                             <Row className="mt-4">
-                              {imageList.map((imgUrl, index) => (
+                              {imageList.map((file, index) => (
                                 <Col key={index} xs={6} sm={4} md={3}>
                                   <div className="image-item">
-                                    <img src={imgUrl} alt={`uploaded-${index}`} className="thumbnail" />
-                                    <Button variant="danger" size="sm" onClick={() => removeImage(imgUrl)}>
+                                    <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} className="thumbnail" />
+                                    <Button variant="danger" size="sm" onClick={() => removeImage(file)}>
                                       X
                                     </Button>
                                   </div>
