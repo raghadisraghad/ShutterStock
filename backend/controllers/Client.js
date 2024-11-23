@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Target from '../models/User.js';
+import Orders from '../models/Order.js';
 import bcrypt from 'bcryptjs';
 import fs from 'fs';
 
@@ -76,6 +77,12 @@ const deleteC = asyncHandler(async (req, res) => {
             console.log('File deleted successfully');
         });
     }
+
+    const orders = await Orders.find({ client : id });
+
+    orders.forEach((order) => {
+        order.archive = true;
+    });
 
     res.status(200).json({ message: "Target Deleted Successfully" })
 });

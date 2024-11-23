@@ -106,7 +106,18 @@ const deleteC = asyncHandler(async (req, res) => {
   if (!target) {
     res.status(404).json({ message: "Target Doesn't Exist !!!" })
   }
-  res.status(200).json({ message: "Target Deleted Successfully" })
+  res.status(200).json({ message: "Target Archived Successfully" })
+});
+
+const archive = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const target = await Target.findById(id);
+  if (!target) {
+    res.status(404).json({ message: "Target Doesn't Exist !!!" })
+  }
+  target.archive = !target.archive;
+  await target.save()
+  res.status(200).json({ message: "Target Archived Successfully" })
 });
 
 export {
@@ -120,5 +131,6 @@ export {
   getServiceByCategory,
   add,
   update,
-  deleteC
+  deleteC,
+  archive
 };

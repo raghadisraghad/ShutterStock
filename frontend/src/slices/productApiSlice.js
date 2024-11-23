@@ -23,6 +23,13 @@ export const productApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    archiveProduct: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `${USERS_URL}/archive/${id}`,
+        method: 'PUT',
+        body: status,
+      }),
+    }),
     getProducts: builder.query({
       query: () => ({
         url: `${USERS_URL}/products`,
@@ -92,5 +99,6 @@ export const {
   useGetProductsByCategoryQuery,
   useGetProductsByTagQuery,
   useGetProductsByVendorQuery,
-  useGetServicesByVendorQuery
+  useGetServicesByVendorQuery,
+  useArchiveProductMutation,
 } = productApiSlice;

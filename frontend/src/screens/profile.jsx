@@ -49,13 +49,6 @@ const Profile = () => {
   const [uploadAvatar, { isLoading: isUploading }] = useUploadAvatarMutation();
 
   const { userInfo, token } = useSelector((state) => state.auth);
-  let fileName = '';
-  if (avatar instanceof File)
-    fileName = avatar;
-  else
-    fileName = avatar.substring(avatar.lastIndexOf('\\') + 1);
-  const src = `http://localhost:3000/api/pictures/avatar/${fileName}`;
-
 
   const handleAddMaterial = () => {
     if (newMaterial.trim() !== '') {
@@ -217,17 +210,19 @@ const Profile = () => {
             <FormContainer>
               <div className="profileHeader">
                 <label htmlFor="avatar">
-                  {avatar && typeof avatar === 'string' && activeSection === 'profile' ? (
-                    <img src={`${src}`} alt="User Avatar" />
-                  ) : avatar instanceof File ? (
-                    <img src={URL.createObjectURL(avatar)} alt="New Avatar" />
-                  ) : (
-                    <i className="fa fa-user-circle" style={{ fontSize: '120px', cursor: 'pointer' }}></i> // Person icon when no avatar
+                  {activeSection === 'profile' && (
+                    avatar && typeof avatar === 'string' ? (
+                      <img src={`http://localhost:3000/api/pictures/avatar/${avatar.split(/[\\/]/).pop()}`} alt="User Avatar" />
+                    ) : avatar instanceof File ? (
+                      <img src={URL.createObjectURL(avatar)} alt="New Avatar" />
+                    ) : (
+                      <i className="fa fa-user-circle" style={{ cursor: 'pointer' }}>click to upload</i>
+                    )
                   )}
                 </label>
 
-                <Form.Group className="my-2 upload-container" controlId="avatar">
-                  <Form.Control type="file" id="avatar" style={{ display: 'none', cursor: 'pointer' }} onChange={handleAvatarChange} />
+                <Form.Group controlId="avatar" className="my-2 upload-container">
+                  <Form.Control type="file" style={{ display: 'none', cursor: 'pointer' }} onChange={handleAvatarChange} />
                 </Form.Group>
                 <h1>Update My {activeSection === 'profile' ? 'Profile' : 'Password'}</h1>
               </div>
@@ -383,7 +378,7 @@ const Profile = () => {
                       </div>
                     </Form.Group>
 
-                    
+
                     <PasswordValidator password={newPassword} setPassword={setNewPassword} />
 
                     <Form.Group controlId="confirmPassword" className="my-2">

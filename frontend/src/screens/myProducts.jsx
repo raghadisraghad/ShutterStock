@@ -3,7 +3,7 @@ import { Form, Button, Row, Col, Nav, Dropdown } from 'react-bootstrap';
 import { redirect, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import FormContainer from '../components/FormContainer';
-import { useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation, useGetProductsByVendorQuery, useGetServicesByVendorQuery } from '../slices/productApiSlice';
+import { useAddProductMutation, useUpdateProductMutation, useDeleteProductMutation, useArchiveProductMutation, useGetProductsByVendorQuery } from '../slices/productApiSlice';
 import { useGetCategoriesQuery } from '../slices/categoriesApiSlice';
 import { useGetTagsByCategoryQuery } from '../slices/tagApiSlice';
 import { useUploadProductImageMutation } from '../slices/imageApiSlice';
@@ -11,24 +11,24 @@ import { skipToken } from '@reduxjs/toolkit/query/react';
 import { toast } from 'react-toastify';
 
 const myProducts = () => {
-  const [activeSection, setActiveSection] = useState('myProducts');
+  const [activeSection, setActiveSection] = useState('product');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [category, setCategory] = useState('');
   const [tags, setTags] = useState([]);
   const [tagsList, setTagsList] = useState([]);
-  const [imageList, setImageList] = useState([]);
+  const [image, setImage] = useState(null);
   const [editProduct, setEditProduct] = useState(null);
 
   const [addProduct, { isLoading }] = useAddProductMutation();
   const [updateProduct, { isLoading: updateLoading }] = useUpdateProductMutation();
   const [deleteProduct, { isLoading: deleteLoading }] = useDeleteProductMutation();
+  const [archiveProduct, { isLoading: archiveLoading }] = useArchiveProductMutation();
   const { userInfo } = useSelector((state) => state.auth);
   const { data: categories, isLoading: categoriesLoading } = useGetCategoriesQuery();
   const [uploadProductImages] = useUploadProductImageMutation();
   const { data: products, isLoading: productsLoading, error: productError, refetch: refreshProducts } = useGetProductsByVendorQuery(userInfo._id);
-  const { data: services, isLoading: servicesLoading, error: serviceError, refetch: refreshServices } = useGetServicesByVendorQuery(userInfo._id);
   const { data: tagsData, isLoading: tagsLoading } = useGetTagsByCategoryQuery(category ? { category } : skipToken);
   const [showPopup, setShowPopup] = useState(false);
 
@@ -48,7 +48,7 @@ const myProducts = () => {
     setPrice(model.price);
     setCategory(model.category._id);
     setTags(model.tags);
-    setImageList(model.Image);
+    setImage(model.Image);
   };
 
   const cancelHandle = () => {
@@ -58,7 +58,8 @@ const myProducts = () => {
     setPrice('');
     setCategory('');
     setTags([]);
-    setImageList('');
+    setImage('');
+    setShowPopup(false);
   }
 
   if (categoriesLoading) {
@@ -66,7 +67,7 @@ const myProducts = () => {
   }
 
   const removeImage = (imageUrl) => {
-    setImageList(imageList.filter((img) => img !== imageUrl));
+    setImage(image.filter((img) => img !== imageUrl));
   };
 
   const handleAddTag = (tag) => {
@@ -86,8 +87,20 @@ const myProducts = () => {
       if (!isConfirmed) return;
       await deleteProduct({ id }).unwrap();
       toast.success('Product Deleted successfully!', { autoClose: 1000, });
-      window.location.reload();
-      navigate('/myProducts');
+      refreshProducts();
+    } catch (err) {
+      toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
+    }
+  }
+
+  const handleArchive = async (id) => {
+    try {
+      const isConfirmed = window.confirm('Are you sure you want to archive this product?');
+
+      if (!isConfirmed) return;
+      await archiveProduct({ id }).unwrap();
+      toast.success('Product Archived successfully!', { autoClose: 1000, });
+      refreshProducts();
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
     }
@@ -103,7 +116,7 @@ const myProducts = () => {
         price: parseFloat(price),
         category,
         tags: tags.map((tag) => tag._id),
-        Image: imageList,
+        picture: image,
       };
 
       await updateProduct({ id: productId, ...data }).unwrap();
@@ -111,19 +124,15 @@ const myProducts = () => {
       setEditProduct(null);
       setShowPopup(null);
       refreshProducts();
-      refreshServices();
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
     }
   };
 
   const handleImageUpload = (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      setImageList(prevImages => {
-        const newImageList = [...prevImages, ...Array.from(files)];
-        return newImageList;
-      });
+    const file = e.target.files[0];
+    if (file) {
+      setImage(file);
     }
   };
 
@@ -131,24 +140,16 @@ const myProducts = () => {
     e.preventDefault();
 
     try {
-      let list = [];
-
-      if (imageList && imageList.length > 0) {
-        const files = new FormData();
-
-        imageList.forEach((file) => {
-          if (file instanceof File) {
-            files.append('pictures', file);
-          }
-        });
-
-        try {
-          const uploadResponse = await uploadProductImages({ id: userInfo._id, files: files }).unwrap();
-          list.push(...uploadResponse.imageUrls);
-        } catch (err) {
-          toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
-          return
-        }
+      let imageUrl = image;
+      if (image instanceof File) {
+        const imageFormData = new FormData();
+        imageFormData.append('picture', image);
+        imageFormData.append('userId', userInfo._id);
+        const uploadResponse = await uploadProductImages({ id: userInfo._id, formData: imageFormData }).unwrap();
+        imageUrl = uploadResponse.imageUrl;
+      }else{
+        toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
+        return
       }
 
       const productData = {
@@ -156,7 +157,7 @@ const myProducts = () => {
         description,
         type: 'product',
         price: parseFloat(price),
-        pictures: list,
+        picture: imageUrl,
         vendor: userInfo._id,
         tags: tags.map((tag) => tag._id),
         category,
@@ -164,8 +165,8 @@ const myProducts = () => {
 
       await addProduct({ productData }).unwrap();
       toast.success('Product Added successfully!', { autoClose: 1000, });
-      navigate('/myProducts');
-      window.location.reload();
+      refreshProducts();
+      setActiveSection('product');
     } catch (err) {
       toast.error(err?.data?.message || err.error || 'An error occurred', { autoClose: 1000, });
     }
@@ -175,91 +176,72 @@ const myProducts = () => {
     <>
       <h1>myProducts</h1>
       <div className="profile-container">
-        {(activeSection === 'product' || activeSection === 'service') && (
+        {(activeSection === 'product') && (
           <>
             <div className={`overlay ${showPopup ? 'active' : ''}`} onClick={() => setShowPopup(false)}></div>
             <div className={`update-profile-popup ${showPopup ? 'active' : ''}`}>
-
-              {editProduct ? (<Form onSubmit={(e) => { if (editProduct) handleUpdateProduct(editProduct._id, e); }}>
-
-                <button onClick={() => { cancelHandle(); setShowPopup(false); }}>Cancel</button>
-
-                <Form.Group controlId="description">
-                  <Form.Label>Description</Form.Label>
-                  <Form.Control as="textarea" rows={3} placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
-                </Form.Group>
-
-                <Form.Group controlId="price">
-                  <Form.Label>Price</Form.Label>
-                  <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
-                </Form.Group>
-
-                <Form.Group controlId="category">
-                  <Form.Label>Category</Form.Label>
-                  <Form.Control as="select" value={category} onChange={(e) => { setCategory(e.target.value); setTags([]); }} required >
-                    <option value="">Select a category</option>
-                    {!categoriesLoading && categories?.map((cat) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-
-                <Form.Group controlId="tags">
-                  <Form.Label>Tags</Form.Label>
-                  <div className="tag-input-container">
-                    {tagsLoading ? (
-                      <p>Loading tags...</p>
-                    ) : (
-                      <Dropdown>
-                        <Dropdown.Toggle variant="outline-primary">
-                          {'Select a Tag'}
-                        </Dropdown.Toggle>
-                        <Dropdown.Menu>
-                          {tagsList?.filter(tag => !tags.includes(tag)).map((tag) => (
-                            <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
-                              {tag.name}
-                            </Dropdown.Item>
-                          ))}
-                        </Dropdown.Menu>
-                      </Dropdown>
-                    )}
-                  </div>
-
-                  <div className="tags-list">
-                    {tags.map((tag) => (
-                      <div className='span'>
-                        <div key={tag._id} className="tag-item">
-                          #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
+              {editProduct ? (
+                <Form onSubmit={(e) => { if (editProduct) handleUpdateProduct(editProduct._id, e); }}>
+                  <button onClick={() => { cancelHandle(); setShowPopup(false); }}>Cancel</button>
+                  <Form.Group controlId="description">
+                    <Form.Label>Description</Form.Label>
+                    <Form.Control as="textarea" rows={3} placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
+                  </Form.Group>
+                  <Form.Group controlId="price">
+                    <Form.Label>Price</Form.Label>
+                    <Form.Control type="number" placeholder="Enter price" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                  </Form.Group>
+                  <Form.Group controlId="category">
+                    <Form.Label>Category</Form.Label>
+                    <Form.Control as="select" value={category} onChange={(e) => { setCategory(e.target.value); setTags([]); }} required >
+                      <option value="">Select a category</option>
+                      {!categoriesLoading && categories?.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </Form.Control>
+                  </Form.Group>
+                  <Form.Group controlId="tags">
+                    <Form.Label>Tags</Form.Label>
+                    <div className="tag-input-container">
+                      {tagsLoading ? (
+                        <p>Loading tags...</p>
+                      ) : (
+                        <Dropdown>
+                          <Dropdown.Toggle variant="outline-primary">
+                            {'Select a Tag'}
+                          </Dropdown.Toggle>
+                          <Dropdown.Menu>
+                            {tagsList?.filter(tag => !tags.includes(tag)).map((tag) => (
+                              <Dropdown.Item key={tag._id} onClick={() => handleAddTag(tag)}>
+                                {tag.name}
+                              </Dropdown.Item>
+                            ))}
+                          </Dropdown.Menu>
+                        </Dropdown>
+                      )}
+                    </div>
+                    <div className="tags-list">
+                      {tags.map((tag) => (
+                        <div className='span'>
+                          <div key={tag._id} className="tag-item">
+                            #{tag.name} <Button variant="link" onClick={() => handleRemoveTag(tag)}>X</Button>
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                </Form.Group>
-
-                <Button type="submit" variant="primary" disabled={isLoading}>
-                  {isLoading ? 'Updating...' : 'Update'}
-                </Button>
-              </Form>
+                      ))}
+                    </div>
+                  </Form.Group>
+                  <Button type="submit" variant="primary" disabled={isLoading}>
+                    {isLoading ? 'Updating...' : 'Update'}
+                  </Button>
+                </Form>
               ) : (
                 <p>No item selected for editing</p>
               )}
             </div>
           </>
         )}
-
-        <div className="sidebar">
-          <h5>Settings</h5>
-          <Nav className="flex-column">
-            <Nav.Link onClick={() => { setActiveSection('addProduct'); cancelHandle(); }} active={activeSection === 'addProduct'}>
-              Add Product
-            </Nav.Link>
-            <Nav.Link onClick={() => { setActiveSection('product'); cancelHandle(); }} active={activeSection === 'product'}>
-              List Products
-            </Nav.Link>
-          </Nav>
-        </div>
 
         <div className="form-content">
           <div className="custom-form-container">
@@ -335,28 +317,23 @@ const myProducts = () => {
                     <Row className="mt-4">
                       <Col ms={5}>
                         <Form.Group controlId="image">
-                          <Form.Label>Images</Form.Label>
-                          <Form.Control type="file" multiple onChange={handleImageUpload} required/>
+                          <Form.Label>Image</Form.Label>
+                          <Form.Control type="file" onChange={handleImageUpload} required />
                         </Form.Group>
 
                         <div className="image-gallery">
-                          {imageList.length > 0 ? (
-                            <Row className="mt-4">
-                              {imageList.map((file, index) => (
-                                <Col key={index} xs={6} sm={4} md={3}>
-                                  <div className="image-item">
-                                    <img src={URL.createObjectURL(file)} alt={`uploaded-${index}`} className="thumbnail" />
-                                    <Button variant="danger" size="sm" onClick={() => removeImage(file)}>
-                                      X
-                                    </Button>
-                                  </div>
-                                </Col>
-                              ))}
-                            </Row>
+                          {image ? (
+                            <div className="image-item">
+                              <img src={URL.createObjectURL(image)} alt="Uploaded" className="thumbnail" />
+                              <Button variant="danger" size="sm" onClick={() => setImage(null)}>
+                                Remove
+                              </Button>
+                            </div>
                           ) : (
-                            <p>No images uploaded yet.</p>
+                            <p>No image uploaded yet.</p>
                           )}
                         </div>
+
                       </Col>
 
                       <Col ms={5}>
@@ -369,7 +346,7 @@ const myProducts = () => {
 
                     <div className='center'>
                       <Button type="submit" variant="primary" disabled={isLoading}>
-                        {isLoading ? 'Adding...' : 'Add Product/Service'}
+                        {isLoading ? 'Adding...' : 'Add Product'}
                       </Button>
                     </div>
                   </Form>
@@ -377,33 +354,48 @@ const myProducts = () => {
 
                 {activeSection === 'product' && (
                   <div className="list">
+                    <Button onClick={() => { setActiveSection('addProduct'); cancelHandle(); }} variant="primary">Add Product</Button>
                     {isLoading ? (
                       <p>Loading products...</p>
                     ) : productError ? (
                       <p>Error loading products.</p>
                     ) : products && products.length > 0 ? (
-                      products.map((product) => (
-                        <div key={product._id} className="item">
-                          <div className="actions">
-                            <button onClick={() => handleDelete(product._id)}>Delete</button>
-                            <button onClick={() => { setShowPopup(true); handleUpdate(product); }}>Update</button>
-                          </div>
-                          <h3>{product.title}</h3>
-                          <p><div className='span'>Description : </div>{product.description}</p>
-                          <p><div className='span'>Type : </div>{product.type}</p>
-                          <p><div className='span'>Price: </div>{product.price} DH</p>
-                          <p><div className='span'>Category : </div>{product.category.name}</p>
-                          <p><div className='span'>Tags:</div></p>
-                          <ul>
-                            {product.tags && product.tags.map((tag, index) => (<li key={index}>#{tag.name}</li>))}
-                          </ul>
-                          <div className='span'>Gallery:</div>
-                          <ul>
-                            {product.Image && product.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                          </ul>
-                          <p><div className='span'>Created the : </div>{new Date(product.dateCreated).toLocaleDateString()}</p>
-                        </div>
-                      ))
+                      <table className="table">
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Picture</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Created Date</th>
+                            <th>Tags</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {products.map((product) => (
+                            <tr key={product._id}>
+                              <td>{product.title}</td>
+                              <td> <img src={`http://localhost:5000/api/pictures/product-images/${userInfo._id}/${product.picture.split(/[\\/]/).pop()}`} alt={product.title}/></td>
+                              <td>{product.description}</td>
+                              <td>{product.price} DH</td>
+                              <td>{product.category.name}</td>
+                              <td>{new Date(product.dateCreated).toLocaleDateString()}</td>
+                              <td>
+                                {product.tags && product.tags.map((tag, index) => (<span key={index}>#{tag.name} </span>))}
+                              </td>
+                              <td>{product.archive ? 'Archived' : 'Active'}</td>
+                              <td>
+                                <button onClick={() => handleDelete(product._id)}>Delete</button>
+                                <button onClick={() => { setShowPopup(true); handleUpdate(product); }}>Update</button>
+                                <button onClick={() => handleArchive(product._id) }>Archive</button>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
                     ) : (
                       <p>No products available</p>
                     )}
@@ -412,9 +404,10 @@ const myProducts = () => {
               </div>
             </FormContainer>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
+
   );
 };
 

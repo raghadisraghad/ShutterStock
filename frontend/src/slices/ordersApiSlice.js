@@ -23,6 +23,12 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
     }),
+    archiveProduct: builder.mutation({
+      query: ({ id }) => ({
+        url: `${USERS_URL}/archive/${id}`,
+        method: 'PUT',
+      }),
+    }),
     getOrders: builder.query({
       query: () => ({
         url: `${USERS_URL}/`,
@@ -36,13 +42,13 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getOrdersByClient: builder.query({
-      query: ({ id }) => ({
-        url: `${USERS_URL}/client/${id}`,
+      query: (clientId) => ({
+        url: `${USERS_URL}/client/${clientId}`,
         method: 'GET',
       }),
     }),
     getOrdersByVendor: builder.query({
-      query: ({ id }) => ({
+      query: ( id ) => ({
         url: `${USERS_URL}/vendor/${id}`,
         method: 'GET',
       }),
@@ -58,4 +64,5 @@ export const {
   useGetOrdersByIdQuery,
   useGetOrdersByClientQuery,
   useGetOrdersByVendorQuery,
+  useArchiveProductMutation,
 } = ordersApiSlice;

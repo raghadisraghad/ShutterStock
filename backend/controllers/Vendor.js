@@ -53,16 +53,15 @@ const deleteC = asyncHandler(async (req, res) => {
     if (!target) {
         res.status(404).json({ message: "Target Doesn't Exist !!!" })
     }
-    
-    try {
-        await Product.deleteMany({ vendor: id });
-        res.status(200).json({ message: "Target and associated data deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ message: "Error deleting associated data", error: err.message });
-    }
+
+    const products = await Product.find({ client : id });
+
+    products.forEach((product) => {
+        product.archive = true;
+    });
 
     const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Products');
-    const userDirectory = path.join(uploadProductDirectory, id.toString());
+    const userDirectory = path.join(uploadProductDirectory, username.toString());
     if (fs.existsSync(userDirectory)) {
         if (fs.existsSync(userDirectory)) {
             fs.rm(userDirectory, { recursive: true, force: true }, (err) => {
@@ -79,7 +78,6 @@ const deleteC = asyncHandler(async (req, res) => {
 
     res.status(200).json({ message: "Target Deleted Successfully" })
 });
-
 
 export {
     add,

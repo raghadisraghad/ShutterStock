@@ -25,7 +25,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      navigate('/myProducts');
     }
   }, [navigate, userInfo]);
 
@@ -35,7 +35,6 @@ const LoginScreen = () => {
       const res = await login({ username, password }).unwrap();
       dispatch(setCredentials({ ...res }));
       toast.success('Logged In successfully!', { autoClose: 1000, });
-      navigate('/');
     } catch (err) {
       toast.error(err?.data?.message || err.error, { autoClose: 1000, });
     }

@@ -48,21 +48,33 @@ router.get('/avatar/:url', (req, res) => {
   });
 });
 
-router.post('/upload-product-image/:id', productImageUpload.array('pictures'), async (req, res) => {
-  const { id } = req.params;
+router.post('/upload-product-image/:userId', productImageUpload.single('picture'), async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
 
-  if (!id) return res.status(404).json({ message: 'User not found!' });
+  if (!user) return res.status(404).json({ message: 'User not found!' });
 
-  if (!req.files || req.files.length === 0) return res.status(400).json({ message: 'No images uploaded!' });
+  if (req.file) {
+    const imageUrl = path.join(uploadProductDirectory, user.username, req.file.filename);
+    res.status(200).json({ imageUrl });
+  } else {
+    res.status(400).json({ message: 'No file uploaded' });
+  }
+});
 
-  let imageUrls = [];
-  req.files.forEach((file) => {
-    imageUrls.push(path.join(uploadProductDirectory, file.filename));
+router.get('/product-images/:id/:url', async (req, res) => {
+  
+  const id = req.params.id;
+  const pictureUrl = req.params.url;
+  const user = await User.findById(id);
+  const imageUrl = path.join(uploadProductDirectory, user.username, pictureUrl);
+
+  res.sendFile(imageUrl, (err) => {
+    if (err) {
+      console.error('Error sending file:', err);
+      res.status(404).json({ message: 'Image not found' });
+    }
   });
-
-  if (imageUrls.length === 0) return res.status(400).json({ message: 'No valid images uploaded!' });
-
-  return res.status(200).json({ imageUrls });
 });
 
 export default router;

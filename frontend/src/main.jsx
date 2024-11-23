@@ -21,7 +21,7 @@ const ProductsScreen = lazy(() => import('./screens/products.jsx'));
 const PortfolioScreen = lazy(() => import('./screens/portfolio.jsx'));
 const OrdersScreen = lazy(() => import('./screens/orders.jsx'));
 const MyProductsScreen = lazy(() => import('./screens/myProducts.jsx'));
-const ContactScreen = lazy(() => import('./screens/contact.jsx'));
+const DashboardScreen = lazy(() => import('./screens/dashboard.jsx'));
 const SettingsScreen = lazy(() => import('./screens/settings.jsx'));
 const PolicyAndTermsScreen = lazy(() => import('./screens/policyAndTerms.jsx'));
 
@@ -45,16 +45,16 @@ const router = createBrowserRouter(
             <Route path='/profile' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ProfileScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
-            <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><SettingsScreen /></Suspense>} />
+            <Route path='/dashboard' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><DashboardScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[1, 2, 3]} />}>
+            <Route path='/setting' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><SettingsScreen /></Suspense>} />
+          </Route>
+          <Route element={<RoleRoute allowedRoles={[1]} />}>
             <Route path='/orders' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><OrdersScreen /></Suspense>} />
           </Route>
-          <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
+          <Route element={<RoleRoute allowedRoles={[2]} />}>
             <Route path='/myProducts' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><MyProductsScreen /></Suspense>} />
-          </Route>
-          <Route element={<RoleRoute allowedRoles={[2, 3]} />}>
-            <Route path='/contact' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><ContactScreen /></Suspense>} />
           </Route>
           <Route element={<RoleRoute allowedRoles={[3]} />}>
             <Route path='/portfolio' element={<Suspense fallback={<div><h4>Loading...</h4></div>}><PortfolioScreen /></Suspense>} />

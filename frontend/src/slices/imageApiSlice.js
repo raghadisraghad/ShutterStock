@@ -17,10 +17,10 @@ const imageApiSlice = apiSlice.injectEndpoints({
             }),
         }),
         uploadProductImage: builder.mutation({
-            query: ({ id, files }) => ({
+            query: ({ id, formData }) => ({
                 url: `${URL}/upload-product-image/${id}`,
                 method: 'POST',
-                body: files,
+                body: formData,
             }),
         }),
     }),

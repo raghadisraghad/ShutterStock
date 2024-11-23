@@ -65,7 +65,7 @@ const Header = () => {
                   <Nav.Link>Dashboard</Nav.Link>
                 </LinkContainer>
               ) : (
-                <></> 
+                <></>
               )}
 
             </Nav>
@@ -77,18 +77,22 @@ const Header = () => {
                     <NavDropdown.Item>Profile</NavDropdown.Item>
                   </LinkContainer>
 
-                  <LinkContainer to='/myProducts'>
-                    <NavDropdown.Item>My Products</NavDropdown.Item>
-                  </LinkContainer>
-
-                  <LinkContainer to='/portfolio'>
-                    <NavDropdown.Item>Portfolio</NavDropdown.Item>
-                  </LinkContainer>
-
+                  {userInfo.role === '1' && (
                   <LinkContainer to='/orders'>
                     <NavDropdown.Item>My Orders</NavDropdown.Item>
                   </LinkContainer>
+                  )}
 
+                  {userInfo.role !== '1' && (
+                    <LinkContainer to='/myProducts'>
+                      <NavDropdown.Item>My Products</NavDropdown.Item>
+                    </LinkContainer>
+                  )}
+                  {userInfo.role === '3' && (
+                    <LinkContainer to='/portfolio'>
+                      <NavDropdown.Item>Portfolio</NavDropdown.Item>
+                    </LinkContainer>
+                  )}
                   <LinkContainer to='/setting'>
                     <NavDropdown.Item>Setting</NavDropdown.Item>
                   </LinkContainer>

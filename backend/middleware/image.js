@@ -2,6 +2,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import Target from '../models/User.js';
 
 dotenv.config({ path: '../../.env' });
 
@@ -42,10 +43,15 @@ const upload = multer({
 });
 
 const storage2 = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const userId = req.params.id;
+  destination: async (req, file, cb) => {
+    const userId = req.params.userId;
 
-    const userDirectory = path.join(uploadProductDirectory, userId.toString());
+    if (!userId) 
+      console.error("Target is null or username is missing", target);
+
+    const target = await Target.findById(userId);
+    const userDirectory = path.join(uploadProductDirectory, target.username);
+
     if (!fs.existsSync(userDirectory)) {
       fs.mkdirSync(userDirectory, { recursive: true });
     }

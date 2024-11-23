@@ -1,121 +1,100 @@
-import React from 'react'
-import { useState, useEffect } from 'react';
-import { Form, Button, Modal, Row, Col, Nav } from 'react-bootstrap';
-import { redirect, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useGetOrdersByClientQuery } from '../slices/ordersApiSlice';
 import FormContainer from '../components/FormContainer';
-import { useGetOrdersQuery } from '../slices/ordersApiSlice';
 
-const orders = () => {
+const Orders = () => {
+  const { userInfo } = useSelector((state) => state.auth);
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('All');
 
-  const [activeSection, setActiveSection] = useState('orders');
-  const { userInfo, token } = useSelector((state) => state.auth);
+  const { data: orders, isLoading, error } = useGetOrdersByClientQuery(userInfo._id);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setShowPopup(true);
+  };
 
-  const { data: orders, isLoading, error } = useGetOrdersQuery();
+  const filteredOrders = orders?.filter((order) =>
+    selectedStatus === 'All' ? true : order.status === selectedStatus
+  );
 
   return (
     <>
       <h1>Orders</h1>
       <div className="profile-container">
-        <div className="sidebar">
-          <h5>Settings</h5>
-          <Nav className="flex-column">
-            <Nav.Link onClick={() => setActiveSection('orders')} active={activeSection === 'orders'}>
-              My Orders
-            </Nav.Link>
-            <Nav.Link onClick={() => setActiveSection('cart')} active={activeSection === 'cart'}>
-              My Cart
-            </Nav.Link>
-          </Nav>
-        </div>
+        {showPopup && selectedProduct && (
+          <div className="popup">
+            <div className="popup-content">
+              <h2>{selectedProduct.title}</h2>
+              <p>{selectedProduct.description}</p>
+              <img src={`http://localhost:5000/api/pictures/product-images/${selectedProduct.vendor}/${selectedProduct.picture.split(/[\\/]/).pop()}`} alt={selectedProduct.title} />
+              <p>Type : {selectedProduct.type}</p>
+              <p>Price: {selectedProduct.price} DH</p>
+              <p>Vendor : {selectedProduct.vendor}</p>
+              <p>Category : {selectedProduct.category}</p>
+              <ul> Tags
+                {selectedProduct.tags.map((tag) => (
+                  <li>{tag.name}</li>
+                ))}
+              </ul>
+              <p>Product Created The: {new Date(selectedProduct.dateCreated).toLocaleDateString()}</p>
+              <button onClick={() => setShowPopup(false)}>Close</button>
+            </div>
+          </div>
+        )}
 
         <div className="form-content">
           <div className="custom-form-container">
             <FormContainer>
               <div className="profileHeader">
-                {activeSection === 'orders' && (
-                  <>
-                    <div className="list">
-                      {isLoading ? (
-                        <p>Loading orders...</p>
-                      ) : error ? (
-                        <p>Error loading orders.</p>
-                      ) : orders && orders.length > 0 && orders.status === 'done' ? (
-                        orders.map((order) => (
-                          <div key={order._id} className="item">
-                            <h3>{order.title}</h3>
-                            <p>{order.description}</p>
-                            <p>Client : {order.client}</p>
-                            <p>Product:</p>
-                            <h3>{order.product.title}</h3>
-                            <p>{order.product.description}</p>
-                            <p>Type : {order.product.type}</p>
-                            <p>Gallery:</p>
-                            <ul>
-                              {order.product.Image && order.product.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                            </ul>
-                            <p>Tags:</p>
-                            <ul>
-                              {order.product.tag && order.product.tag.map((tag, index) => (<li key={index}>{tag}</li>))}
-                            </ul>
-                            <p>Category : {order.product.category.name}</p>
-                            <p>Created the : {order.product.dateCreated}</p>
-                            <p>Price: {order.product.price} DH</p>
-                            <p>Created the : {order.dateCreated}</p>
-                            <p>Price: {order.total} DH</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No orders available</p>
-                      )}
-                    </div>
-                  </>
-                )}
-
-                {userInfo.role === '1' && (
-                  <>{activeSection === 'cart' && (
-                    <>
-                      <div className="list">
-                        {isLoading ? (
-                          <p>Loading orders...</p>
-                        ) : error ? (
-                          <p>Error loading orders.</p>
-                        ) : orders && orders.length > 0 && orders.status === 'pending' ? (
-                          orders.map((order) => (
-                            <div key={order._id} className="item">
-                              <h3>{order.title}</h3>
-                              <p>{order.description}</p>
-                              <p>Client : {order.client}</p>
-                              <p>Product:</p>
-                              <h3>{order.product.title}</h3>
-                              <p>{order.product.description}</p>
-                              <p>Type : {order.product.type}</p>
-                              <p>Gallery:</p>
-                              <ul>
-                                {order.product.Image && order.product.Image.map((image, index) => (<li key={index}><img src="image" alt="image" /></li>))}
-                              </ul>
-                              <p>Tags:</p>
-                              <ul>
-                                {order.product.tag && order.product.tag.map((tag, index) => (<li key={index}>{tag}</li>))}
-                              </ul>
-                              <p>Category : {order.product.category.name}</p>
-                              <p>Created the : {order.product.dateCreated}</p>
-                              <p>Price: {order.product.price} DH</p>
-                              <p>Created the : {order.dateCreated}</p>
-                              <p>Price: {order.total} DH</p>
-                            </div>
-                          ))
-                        ) : (
-                          <p>No orders available</p>
-                        )}
-                      </div>
-                    </>
+                <div className="list"><div className="filter-container">
+                  <label htmlFor="statusFilter">Filter by Status:</label>
+                  <select id="statusFilter" value={selectedStatus} onChange={(e) => setSelectedStatus(e.target.value)} >
+                    <option value="All">All</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+                  {isLoading ? (
+                    <p>Loading orders...</p>
+                  ) : error ? (
+                    <p>Error loading orders.</p>
+                  ) : Array.isArray(filteredOrders) && filteredOrders.length > 0 ? (
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Order Number</th>
+                          {userInfo.role !== '1' && <th>Client</th>}
+                          <th>Product</th>
+                          <th>Status</th>
+                          <th>Total</th>
+                          <th>Date Created</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {orders.map((order, index) => (
+                          <tr key={order._id}>
+                            <td>{index + 1}</td>
+                            {userInfo.role !== '1' && <td>{order.client.username}</td>}
+                            <td>
+                              <button onClick={() => handleProductClick(order.product[0])}>
+                                {order.product[0]?.title}
+                              </button>
+                            </td>
+                            <td>{order.status}</td>
+                            <td>{order.total} DH</td>
+                            <td>{new Date(order.dateCreated).toLocaleDateString()}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  ) : (
+                    <p>No orders available</p>
                   )}
-                  </>
-                )}
+                </div>
               </div>
             </FormContainer>
           </div>
@@ -123,6 +102,6 @@ const orders = () => {
       </div>
     </>
   );
-}
+};
 
-export default orders
+export default Orders;
