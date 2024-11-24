@@ -15,18 +15,6 @@ services:
       - "5000:5000"
     networks:
       - mern-network
-
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    command: npm run dev -- --host
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-    networks:
-      - mern-network
-
 networks:
   mern-network:
     driver: bridge
