@@ -1,0 +1,193 @@
+:root {
+    --green-light: #80F2B5;
+    --green-medium: #73D6BA;
+    --green-dark: #49A993;
+    --red-dark: #E57376;
+    --red-medium: #FF686D;
+    --red-light: #FF7075;
+    --link: #AEB4B7;
+    --active-link: #73D6BA;
+    --hover-link: #BFC2C4;
+    --light: #000000;
+    --dark: #ffffff;
+}
+
+[data-theme='dark'] {
+    --green-light: #00DF82;
+    --green-medium: #2CC295;
+    --green-dark: #03624C;
+    --red-dark: #B81D23;
+    --red-medium: #CF131B;
+    --red-light: #E50913;
+    --link: #6c757d;
+    --active-link: #2CC295;
+    --hover-link: #979899;
+    --light: #ffffff;
+    --dark: #000000;
+}
+
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-sidebar {
+    width: 20%;
+    background-color: var(--green-light);
+    padding: 2rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.dashboard-sidebar li {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-align: left;
+    transition: background-color 0.3s ease;
+    color: var(--dark);
+}
+
+.dashboard-sidebar li.active {
+    background-color: var(--green-medium);
+    color: var(--dark);
+}
+
+.dashboard-sidebar li:hover {
+    background-color: var(--hover-link);
+}
+
+.dashboard-content {
+    flex: 1;
+    padding: 20px;
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+[data-theme='dark'] .dashboard-sidebar {
+    background-color: var(--green-dark);
+}
+
+[data-theme='dark'] .dashboard-content {
+    background-color: var(--dark);
+    color: var(--light);
+}
+
+[data-theme='dark'] .dashboard-sidebar li.active {
+    background-color: var(--green-medium);
+    color: var(--dark);
+}
+
+.products-section {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+.chart-container {
+    gap: 2%;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.chart-container h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.chart-container p {
+    font-size: 16px;
+    color: #666;
+}
+
+.chart-container .recharts-wrapper {
+    width: 100% !important;
+    height: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.products-section h2 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.products-section p {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+/* Bar chart colors */
+.bar-color-1 {
+    fill: var(--red-medium); /* Custom red color */
+}
+
+.bar-color-2 {
+    fill: var(--red-dark); /* Custom darker red color */
+}
+
+.bar-color-3 {
+    fill: var(--green-medium); /* Custom green color */
+}
+
+.bar-color-4 {
+    fill: var(--green-light); /* Custom light green color */
+}
+
+.bar-color-5 {
+    fill: var(--green-dark); /* Custom dark green color */
+}
+
+@media (max-width: 768px) {
+    .chart-container {
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
+}
+
+@media (min-width: 768px) {
+    .products-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .chart-container {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .products-section {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media (min-width: 992px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm {
+        max-width: 100%;
+    }
+}

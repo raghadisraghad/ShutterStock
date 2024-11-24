@@ -78,7 +78,7 @@ const deleteC = asyncHandler(async (req, res) => {
         });
     }
 
-    const orders = await Orders.find({ client : id });
+    const orders = await Orders.find({ client: id });
 
     orders.forEach((order) => {
         order.archive = true;
@@ -87,10 +87,123 @@ const deleteC = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "Target Deleted Successfully" })
 });
 
+const getUserRoleAnalyses = asyncHandler(async (req, res) => {
+
+    const mostActiveUser = await Orders.aggregate([
+        {
+            $group: {
+                _id: "$client",
+                activityCount: { $sum: 1 },
+            },
+        },
+        { $sort: { activityCount: -1 } },
+        { $limit: 1 },
+    ]);
+    const populatedMostActiveUser = await Target.populate(mostActiveUser, { path: "_id" });
+
+    const topProductVendors = await Orders.aggregate([
+        { $unwind: "$product" },
+        {
+            $lookup: {
+                from: "products",
+                localField: "product",
+                foreignField: "_id",
+                as: "productDetails",
+            },
+        },
+        { $unwind: "$productDetails" },
+        { $match: { "productDetails.type": "product" } }, // Match product type
+        { $group: { _id: "$productDetails.vendor", totalRevenue: { $sum: "$total" } } },
+        { $sort: { totalRevenue: -1 } },
+        { $limit: 5 },
+    ]);
+    const populatedTopProductVendors = await Target.populate(topProductVendors, { path: "_id" });
+
+    const topServiceVendors = await Orders.aggregate([
+        { $unwind: "$product" },
+        {
+            $lookup: {
+                from: "products",
+                localField: "product",
+                foreignField: "_id",
+                as: "productDetails",
+            },
+        },
+        { $unwind: "$productDetails" },
+        { $match: { "productDetails.type": "service" } }, // Match service type
+        { $group: { _id: "$productDetails.vendor", totalRevenue: { $sum: "$total" } } },
+        { $sort: { totalRevenue: -1 } },
+        { $limit: 5 },
+    ]);
+    const populatedTopServiceVendors = await Target.populate(topServiceVendors, { path: "_id" });
+
+    const topClientsByPurchases = await Orders.aggregate([
+        { $group: { _id: "$client", totalPurchases: { $sum: 1 } } },
+        { $sort: { totalPurchases: -1 } },
+        { $limit: 5 },
+    ]);
+    const populatedTopClientsByPurchases = await Target.populate(topClientsByPurchases, { path: "_id" });
+
+    const topClientsBySpending = await Orders.aggregate([
+        { $group: { _id: "$client", totalSpent: { $sum: "$total" } } },
+        { $sort: { totalSpent: -1 } },
+        { $limit: 5 },
+    ]);
+    const populatedTopClientsBySpending = await Target.populate(topClientsBySpending, { path: "_id" });
+
+    const adminUsers = await Target.find({ role: "0" }).sort({ dateCreated: 1 }).limit(5);
+
+    const vendorRevenueComparison = await Orders.aggregate([
+        { $unwind: "$product" },
+        {
+            $lookup: {
+                from: "products",
+                localField: "product",
+                foreignField: "_id",
+                as: "productDetails",
+            },
+        },
+        { $unwind: "$productDetails" },
+        {
+            $match: {
+                "productDetails.type": { $in: ["product", "service"] },
+            },
+        },
+        {
+            $group: {
+                _id: "$productDetails.type",
+                totalRevenue: { $sum: "$total" },
+            },
+        },
+    ]);
+
+    const averageClientSpending = await Orders.aggregate([
+        { $group: { _id: "$client", totalSpent: { $sum: "$total" } } },
+        {
+            $group: {
+                _id: null,
+                averageSpending: { $avg: "$totalSpent" },
+            },
+        },
+    ]);
+
+    res.status(200).json({
+        mostActiveUser: populatedMostActiveUser,
+        topProductVendors: populatedTopProductVendors,
+        topServiceVendors: populatedTopServiceVendors,
+        topClientsByPurchases: populatedTopClientsByPurchases,
+        topClientsBySpending: populatedTopClientsBySpending,
+        adminUsers,
+        vendorRevenueComparison,
+        averageClientSpending: averageClientSpending[0]?.averageSpending || 0,
+    });
+});
+
 export {
     getAll,
     getById,
     add,
     update,
-    deleteC
+    deleteC,
+    getUserRoleAnalyses
 };

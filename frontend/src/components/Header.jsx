@@ -83,7 +83,7 @@ const Header = () => {
                   </LinkContainer>
                   )}
 
-                  {userInfo.role !== '1' && (
+                  {userInfo.role === '2' || userInfo.role === '3' && (
                     <LinkContainer to='/myProducts'>
                       <NavDropdown.Item>My Products</NavDropdown.Item>
                     </LinkContainer>

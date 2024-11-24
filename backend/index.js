@@ -210,12 +210,12 @@ app.use('/api/auth', authRoute);
 app.use('/api/admin', protect, adminRoute);
 app.use('/api/client', protect, clientRoute);
 app.use('/api/vendor', protect, vendorRoute);
+app.use('/api/orders', protect, orderRoute);
 app.use('/api/vendorProduct', vendorProductRoute);
 app.use('/api/vendorService', vendorServiceRoute);
 app.use('/api/products', productRoute);
 app.use('/api/tags', tagRoute);
 app.use('/api/categories', categoryRoute);
-app.use('/api/orders', protect, orderRoute);
 app.use('/api/pictures', pictureRoute);
 
 app.use(notFound);
