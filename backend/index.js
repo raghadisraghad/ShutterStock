@@ -5,8 +5,6 @@ import protect from './middleware/auth.js';
 import { notFound, errorHandler } from './middleware/error.js';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
-import Category from './models/Category.js';
-import Tag from './models/Tag.js';
 import authRoute from './routes/Auth.js';
 import adminRoute from './routes/Admin.js';
 import clientRoute from './routes/Client.js';
@@ -160,45 +158,13 @@ const tags = [
   { name: "Rugby", category: "Sports" }, // Sports
 ];
 
-try {
-  await connectDB();
-  
-  // for (const category of categories) {
-  //   const existingCategory = await Category.findOne({ name: category.name });
-    
-  //   if (!existingCategory) {
-  //     await Category.create(category);
-  //     console.log(`Category '${category.name}' added successfully!`);
-  //   }
-  // }
-  
-  // for (const tag of tags) {
-  //   const category = await Category.findOne({ name: tag.category });
-    
-  //   if (category) {
-  //     const existingTag = await Tag.findOne({ name: tag.name });
-      
-  //     if (!existingTag) {
-  //       await Tag.create({
-  //         name: tag.name,
-  //         category: category._id
-  //       });
-  //       console.log(`Tag '${tag.name}' with category ID '${category._id}' added successfully!`);
-  //     }
-  //   } else {
-  //     console.log(`Category '${tag.category}' not found for tag '${tag.name}'. Skipping...`);
-  //   }
-  // }
-} catch (error) {
-  console.error('Error occurred:', error);
-}
-
+await connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(cors({
-  origin: `${process.env.VITE_FRONTEND_URL}`,
+  origin: `${process.env.FRONT}`,
   credentials: true,
 }));
 
@@ -222,5 +188,5 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
-  console.log(`Server is running on ${process.env.VITE_ORIGIN}`);
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 });

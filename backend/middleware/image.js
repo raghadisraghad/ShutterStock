@@ -4,7 +4,7 @@ import fs from 'fs';
 import dotenv from 'dotenv';
 import Target from '../models/User.js';
 
-dotenv.config({ path: '../../.env' });
+dotenv.config({ path: './.env' });
 
 const uploadDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Users');
 const uploadProductDirectory = path.join(process.env.UPLOAD_DIRECTORY, 'Products');
