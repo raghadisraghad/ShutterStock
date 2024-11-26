@@ -8,7 +8,8 @@ export default defineConfig({
     proxy :{
       '/api':{
         target:  'https://mern--backend-d9e4cea28066.herokuapp.com/',
-        changeOrigin: true
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
