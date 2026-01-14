@@ -1,0 +1,904 @@
+/* Center the role-selection-container-wrapper */
+.role-selection-container-wrapper {
+  display: flex;
+  justify-content: center;  /* Horizontally center the container */
+  align-items: center;      /* Vertically center the container */
+  min-height: 70vh;         /* Take at least 70% of the viewport height */
+  padding: 40px 0;          /* Add padding for spacing around */
+  margin-top: 20px;         /* Ensure some space from navbar */
+  margin-bottom: 20px;      /* Ensure space from footer */
+}
+
+.role-selection-container {
+  display: flex;  /* Use Flexbox for horizontal layout */
+  justify-content: space-between;  /* Distribute space evenly between the containers */
+  gap: 30px;      /* More space between containers */
+  width: 80%;      /* Make the container take 80% of the available width */
+  max-width: 1200px; /* Set a max width for larger screens */
+  flex-wrap: wrap;  /* Allow wrapping on smaller screens */
+  padding: 20px;
+}
+
+.role-container {
+  position: relative;
+  width: 280px;  /* Increase the width for a larger appearance */
+  height: 380px; /* Set a fixed height for the container */
+  text-align: center;
+  cursor: pointer;
+  border-radius: 15px;  /* Rounded corners for modern look */
+  overflow: hidden;
+  background-color: #fff;  /* White background */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);  /* Subtle shadow */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
+}
+
+.role-container:hover {
+  transform: translateY(-10px);  /* Lift the container slightly on hover */
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);  /* Stronger shadow on hover */
+}
+
+.role-image {
+  width: 100%;
+  height: 60%;  /* Set image to take 60% of the container's height */
+  object-fit: cover;  /* Ensure image covers the area without stretching */
+  border-radius: 10px;  /* Rounded corners for image */
+  margin-bottom: 15px;  /* Space between image and title */
+  transition: opacity 0.3s ease;
+}
+
+.role-title {
+  font-size: 1.4rem;  /* Slightly larger title for prominence */
+  font-weight: 600;   /* Make the title bolder */
+  color: #333;       /* Dark text color */
+  margin-bottom: 10px;  /* Add space below the title */
+}
+
+.role-details {
+  font-size: 1.1rem;  /* Slightly larger text for details */
+  color: #666;        /* Light gray color for text */
+  font-weight: 400;
+}
+
+.role-container:hover .role-image {
+  opacity: 0.85;  /* Slight fade effect on hover */
+}
+
+@media (max-width: 768px) {
+  .role-selection-container {
+    flex-direction: column;  /* Stack the items vertically on mobile */
+    align-items: center;     /* Center the items */
+  }
+
+  .role-container {
+    width: 90%;  /* Use 90% of the width for smaller screens */
+    margin-bottom: 20px;  /* Add margin between stacked containers */
+  }
+}
+
+/* General form container styling */
+.form-container-modern {
+  width: 100%;
+  max-width: 1100px;
+  margin: 80px auto;  /* Added more space above and below */
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-container-modern h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 40px;  /* Added more space below the title */
+}
+
+/* Layout for splitting the form into two columns */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.form-column {
+  flex: 1;
+}
+
+/* Form input styling */
+.form-control-modern {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control-modern:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Date Picker Styling */
+.birth-date-group {
+  margin-bottom: 30px;
+}
+
+.birth-date-wrapper {
+  position: relative;
+}
+
+.date-picker-input {
+  width: 100%;
+  padding: 14px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.date-picker-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Navigation Buttons Styling */
+.form-navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px; /* More space between form fields and buttons */
+  align-items: center;
+}
+
+.form-button-nav {
+  font-size: 1rem;
+  padding: 12px 25px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.form-button-back {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.form-button-back:hover {
+  background-color: #5a6268;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-button-next {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.form-button-next:hover {
+  background-color: #0056b3;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-button-submit {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.form-button-submit:hover {
+  background-color: #218838;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-button-nav:focus {
+  outline: none;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+.button-icon {
+  margin-right: 8px; /* Adds spacing between the icon and text */
+  font-size: 1.2rem;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-column {
+    width: 100%;
+  }
+
+  .form-navigation-buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+}
+
+/* Error message styling for invalid email */
+.email-error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
+/* Button Styling */
+.form-button-nav {
+  font-size: 1rem;
+  padding: 12px 25px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+}
+
+.form-button-back {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.form-button-back:hover {
+  background-color: #5a6268;
+}
+
+.form-button-next {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.form-button-next:hover {
+  background-color: #0056b3;
+}
+
+.form-button-submit {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.form-button-submit:hover {
+  background-color: #218838;
+}
+
+.button-icon {
+  margin-right: 8px;  /* Adds spacing between the icon and text */
+  font-size: 1.2rem;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-column {
+    width: 100%;
+  }
+}
+
+/* Styling for Step 3 container */
+.account-setup-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Section title */
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* Modern input fields */
+.form-control-modern {
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.form-control-modern:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+}
+
+/* Password field */
+.password-field-modern {
+  padding-right: 50px; /* Space for the visibility icon */
+}
+
+/* Wrapper for password input + icon */
+.password-input-wrapper {
+  position: relative;
+}
+
+/* Button for showing/hiding password */
+.password-visibility-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: #007bff;
+  font-size: 1.25rem;
+}
+
+/* Phone number input wrapper */
+.phone-number-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.phone-number-input {
+  padding-left: 50px; /* Add space for the country code */
+  border-radius: 8px;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.country-code {
+  position: absolute;
+  left: 12px;
+  color: #007bff;
+  font-weight: 500;
+  font-size: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #fff;
+  padding: 0 8px;
+  z-index: 1;
+}
+
+/* Error messages for invalid phone number */
+.phone-error-message {
+  font-size: 0.875rem;
+  color: red;
+  margin-top: 5px;
+}
+
+/* Styling for the form field labels */
+.form-label {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* Adjust Button Icon Sizes */
+.password-visibility-toggle .button-icon {
+  font-size: 1.25rem; /* Larger icon size for visibility toggle */
+}
+
+/* Add extra margin for form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* Styling for password validation component (optional) */
+.password-validator {
+  margin-top: 10px;
+  color: #777;
+  font-size: 0.875rem;
+}
+
+
+/* Error message styling */
+.error-message {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+/* Styling for invalid form control */
+.is-invalid {
+  border-color: red;
+  background-color: #f8d7da;
+}
+
+.form-control-modern:focus.is-invalid {
+  border-color: red;
+  box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+
+
+/* Step 4 Styling */
+.profile-info-container {
+  margin: 2rem auto;
+  padding: 2rem;
+  max-width: 900px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Form Row (2 columns) */
+.form-row {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+/* Form Columns */
+.form-column {
+  flex: 1;
+  min-width: 300px;
+}
+
+/* Form Input Styling */
+.form-control-modern {
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  padding: 0.75rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.form-control-modern:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+}
+
+.form-control-modern::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* Button Styling */
+.add-material-button {
+  margin-top: 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Tooltip Icon (Question mark) */
+.info-tooltip {
+  font-size: 1.2rem;
+  color: #007bff;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+/* Tooltip Text */
+.info-tooltip:hover::after {
+  content: attr(data-toggle);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 0.875rem;
+  top: -30px;
+  left: 0;
+  width: max-content;
+  transform: translateX(20px);
+  white-space: nowrap;
+}
+
+/* Material List */
+.material-list {
+  margin-top: 1rem;
+  padding-left: 20px;
+  list-style-type: none;
+  padding-right: 20px;
+}
+
+.material-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.remove-material-button {
+  font-size: 0.875rem;
+  color: #dc3545;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Styling the Remove Button */
+.remove-material-button:hover {
+  text-decoration: underline;
+}
+
+/* Input Wrapper for Add Material */
+.materials-input-wrapper {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+/* Material Input and Button */
+.materials-input-wrapper .form-control-modern {
+  flex: 1;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-column {
+    width: 100%;
+  }
+
+  .materials-input-wrapper {
+    flex-direction: column;
+  }
+
+  .material-list {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+/* Tooltip Icon (Question mark) */
+.info-tooltip {
+  font-size: 1.2rem;
+  color: #007bff;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.info-tooltip:hover::after {
+  content: attr(data-toggle);
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 0.875rem;
+  top: -30px;
+  left: 0;
+  width: max-content;
+  transform: translateX(20px);
+  white-space: nowrap;
+}
+
+
+/* Container Styling for Step 5 */
+.social-links-container {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Form Layout */
+.form-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Columns for Form */
+.form-column {
+  flex: 1;
+  max-width: 48%;
+}
+
+/* Social Media Input Styling */
+.social-input-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.social-input {
+  padding-left: 2.5rem;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  height: 40px;
+  transition: all 0.3s ease;
+}
+
+.social-input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.social-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.5rem;
+  color: #007bff;
+}
+
+/* Placeholder styling */
+.social-input::placeholder {
+  color: #888;
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* Hover Effects */
+.social-input:hover {
+  border-color: #0056b3;
+  box-shadow: 0 0 4px rgba(0, 86, 179, 0.5);
+}
+
+/* Clean and Minimalist Icon and Button Styles */
+.social-icon {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.social-input-wrapper:hover .social-icon {
+  transform: translateY(-50%) scale(1.2);
+  color: #0056b3;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-column {
+    max-width: 100%;
+  }
+}
+
+/* Container Styling for Step 6 */
+.identification-container {
+  margin-top: 2rem;
+  padding: 2rem;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #333;
+  text-align: center;
+}
+
+/* Avatar Upload Group */
+.avatar-upload-group {
+  margin-top: 1rem;
+}
+
+.upload-label {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1rem;
+  display: block;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* File Upload Container */
+.upload-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+.upload-btn {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+  background-color: #0056b3;
+}
+
+.upload-icon {
+  margin-right: 8px;
+}
+
+.upload-input {
+  display: none; /* Hide the default file input */
+}
+
+.avatar-preview {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.avatar-preview-img {
+  border-radius: 50%;
+  border: 3px solid #007bff;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.avatar-preview-img:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .identification-container {
+    padding: 1.5rem;
+  }
+
+  .upload-btn {
+    padding: 8px 16px;
+  }
+
+  .avatar-preview-img {
+    width: 80px;
+    height: 80px;
+  }
+}
+/* Container for the whole step */
+.terms-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.terms-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* Title of the Step */
+.section-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Terms Heading */
+.terms-heading {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+/* Container for the Terms Text */
+.terms-text {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.7;
+  max-height: 350px;
+  overflow-y: auto;
+  margin-bottom: 2rem;
+}
+
+.terms-text p {
+  margin-bottom: 15px;
+}
+
+.terms-text a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.terms-text a:hover {
+  text-decoration: underline;
+}
+
+/* Checkbox and Label */
+.terms-checkbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.terms-checkbox input {
+  margin-right: 12px;
+  transform: scale(1.2);
+  accent-color: #007bff;
+}
+
+.terms-checkbox label {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Styling for the link */
+.terms-link {
+  color: #007bff;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.terms-link:hover {
+  color: #0056b3;
+}
+
+/* Responsive Styling */
+@media (max-width: 768px) {
+  .terms-container {
+    padding: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.6rem;
+  }
+
+  .terms-heading {
+    font-size: 1.2rem;
+  }
+
+  .terms-text {
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
+
+
+
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #5c6bc0;
+  color: white;
+}
+

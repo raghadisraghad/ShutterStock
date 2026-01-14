@@ -1,0 +1,69 @@
+/* Apply global smooth transitions to all elements */
+* {
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Card hover effect with subtle scaling and shadow */
+  .card {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+    border-radius: 8px; /* Slight rounding for a sleek look */
+  }
+  
+  .card:hover {
+    transform: translateY(-5px) scale(1.03); /* Small vertical lift for depth */
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2); /* Stronger shadow for emphasis */
+  }
+  
+  /* Card image hover effect with smooth zoom */
+  .card img {
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover img {
+    transform: scale(1.05); /* Slight zoom effect on image */
+  }
+  
+
+
+  
+  /* Pagination controls hover effect with gentle animation */
+  .pagination-controls button {
+    background: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 4px;
+  }
+  
+  .pagination-controls button:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px); /* Slight lift */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for hover */
+  }
+  
+  .pagination-controls button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  
+  .pagination-controls span {
+    font-size: 16px;
+    margin: 0 10px;
+    color: #333;
+  }
+  
+  /* General smooth fade-in for elements */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+  
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+  

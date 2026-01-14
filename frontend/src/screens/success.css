@@ -1,0 +1,39 @@
+.success-container {
+    text-align: center;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .success-container h1 {
+    font-size: 2em;
+    color: green;
+  }
+  
+  .success-container p {
+    font-size: 1.2em;
+    margin: 20px 0;
+  }
+  
+  .success-container .btn {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .success-container .btn:hover {
+    background-color: #45a049;
+  }
+  
+  .success-container .btn:active {
+    background-color: #397d3a;
+  }
+  

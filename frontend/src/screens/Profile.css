@@ -1,0 +1,291 @@
+/* General Container */
+.profile-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  min-height: 100vh;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+/* Sidebar Styling */
+.sidebar {
+  width: 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  min-height: 500px;
+}
+
+.sidebar h5 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.sidebar .nav-link {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  color: #333;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #2abf59;
+  color: white;
+}
+
+/* Main Form Content */
+.form-content {
+  flex: 1;
+  margin-left: 40px;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  min-height: 500px;
+  max-width: 900px; /* Increased width */
+  align-self: flex-start;
+  justify-content: flex-start;
+  gap: 20px;
+  height: 100%;
+}
+
+/* Profile Header Styling */
+.profile-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.profile-header h1 {
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 20px;
+  letter-spacing: 1px;
+}
+
+/* Avatar Upload Styling */
+.avatar-upload-label {
+  display: inline-block;
+  width: 140px;
+  height: 140px;
+  background-color: #f1f1f1;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-upload-label i {
+  font-size: 32px;
+  color: #aaa;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.avatar-upload-label img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.upload-container input[type="file"] {
+  display: none;
+}
+
+/* Form Inputs */
+input, select, textarea {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 20px;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #2abf59;
+  background-color: #fff;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+textarea:focus {
+  background-color: #fafafa;
+}
+
+.error {
+  color: #e74c3c;
+  font-size: 0.875rem;
+  margin-top: 5px;
+}
+
+/* Password Visibility Toggle */
+.password-input-container {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 20px;
+  color: #aaa;
+  transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #2abf59; /* Green color on hover */
+}
+
+.password-input-container input {
+  padding-right: 40px; /* Space for the password toggle */
+}
+
+/* Social Links Section */
+.social-links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.social-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.social-input input {
+  padding-right: 30px;
+}
+
+.social-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 20px;
+  color: black; /* Social icons in black */
+  transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+  color: #2abf59; /* Change to green color on hover */
+}
+
+/* Materials List */
+.materials {
+  font-size: 0.9rem;
+  margin-top: 20px;
+}
+
+.materials ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.materials li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+}
+
+.materials li span {
+  color: #e74c3c;
+  cursor: pointer;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.materials li span:hover {
+  color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .sidebar {
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .form-content {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-container {
+    padding: 10px;
+  }
+
+  .sidebar {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-content {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .profile-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .avatar-upload-label {
+    width: 120px;
+    height: 120px;
+  }
+
+  .social-links {
+    gap: 10px;
+  }
+
+  .social-input input {
+    padding-right: 25px;
+  }
+
+  .social-icon {
+    font-size: 18px;
+  }
+}
+
+

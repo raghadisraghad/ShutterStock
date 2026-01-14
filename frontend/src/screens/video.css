@@ -1,0 +1,152 @@
+.product-container {
+  border: 1px solid #ddd;
+  overflow: hidden;
+  width: 32%;
+  /* Set width to 32% for 3 items per row */
+  height: 300px;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-bottom: 16px;
+}
+
+.product-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
+.product-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+  border-radius: 0;
+  /* No border radius */
+}
+
+.product-container:hover .product-video {
+  opacity: 0.7;
+}
+
+.product-info {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.product-container:hover .product-info {
+  opacity: 1;
+}
+
+.product-info h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.product-info h4 {
+  font-size: 14px;
+  color: #ffcc00;
+  margin-top: 8px;
+}
+
+.product-info p {
+  font-size: 12px;
+  color: #fff;
+  margin-top: 4px;
+}
+
+
+.product-video-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px;
+}
+
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  justify-content: space-between;
+}
+
+.search-input-container {
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.clear-search-btn {
+  padding: 12px 20px;
+  background-color: #ffcc00;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background-color: #e0b700;
+}
+
+.filter-select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.filter-select:last-of-type {
+  margin-right: 0;
+}
+
+.select-tag {
+  min-width: 200px;
+}
+
+@media (max-width: 768px) {
+  .filter-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-input-container {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .filter-select {
+    width: 100%;
+    margin-bottom: 12px;
+  }
+
+  .clear-search-btn {
+    width: 100%;
+  }
+}

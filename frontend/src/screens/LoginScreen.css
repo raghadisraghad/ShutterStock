@@ -1,0 +1,299 @@
+
+
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 83vh;
+  padding: 0px;
+}
+
+.login-layout {
+  display: flex;
+  width: 90%;
+  max-width: 1300px;
+  background: white;
+  border-radius: 25px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.login-left {
+  flex: 1;
+  padding: 50px;
+  background: linear-gradient(135deg, #33cc66, #2b993d);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+}
+
+.login-left p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.image-grid {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.grid-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 3px solid white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.grid-image:hover {
+  transform: scale(1.1);
+}
+
+/* Right Section */
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 450px;
+}
+
+.form-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+/* Spacing between username and password fields */
+.form-group {
+  margin-bottom: 2.5rem; /* Increased spacing */
+}
+
+/* Enhanced input fields */
+.input-field {
+  width: 100%;
+  padding: 1.2rem; /* Added padding for a more luxurious feel */
+  font-size: 1.1rem;
+  border: 2px solid #33cc66;
+  border-radius: 12px; /* More rounded corners */
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.input-field:focus {
+  border-color: #2abf59;
+  background-color: #fff;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.input-field::placeholder {
+  color: #bbb;
+  font-style: italic;
+}
+
+/* Password input container with better alignment */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2.5rem; /* Matches form-group spacing */
+}
+
+/* Modern show/hide password button */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #33cc66;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+  color: #2abf59;
+  transform: translateY(-50%) scale(1.2);
+}
+
+/* Submit button styling */
+button[type="submit"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background-color: #33cc66;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 12px; /* Rounded corners for a modern feel */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"]:hover {
+  background-color: #2abf59;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Responsive scaling for smaller screens */
+@media (max-width: 768px) {
+  .input-field,
+  .submit-button {
+    padding: 0.9rem 1rem; /* Adjusted padding for smaller devices */
+  }
+
+  .form-group {
+    margin-bottom: 1.8rem; /* Reduced spacing */
+  }
+}
+
+
+.submit-button:hover {
+  background: linear-gradient(135deg, #28a745, #33cc66);
+  transform: scale(1.05);
+}
+
+.button-icon {
+  font-size: 1.3rem;
+}
+
+.register-link {
+  color: #33cc66;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-layout {
+    flex-direction: column;
+  }
+
+  .login-left {
+    padding: 30px;
+  }
+
+  .login-right {
+    padding: 30px;
+  }
+
+}
+
+
+  /* Logo Styling */
+.logo-image {
+  width: 300px;
+  height: 150px;
+  border-radius: 20%;
+  object-fit: contain; /* Ensures the logo is fully visible */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.1);
+}
+
+/* Input Fields Styling */
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  border: 2px solid #33cc66;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  color: #333;
+  outline: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+  border-color: #2abf59;
+  background-color: white;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+input[type="text"]::placeholder,
+input[type="password"]::placeholder {
+  color: #aaa;
+  font-style: italic;
+}
+
+/* Password Input Container */
+.password-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #33cc66;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.password-toggle:hover {
+  transform: scale(1.2);
+  color: #2abf59;
+}
+
+/* Button Styling */
+button[type="submit"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background-color: #33cc66;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+button[type="submit"]:hover {
+  background-color: #2abf59;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+

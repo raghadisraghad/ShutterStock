@@ -1,0 +1,134 @@
+/* Global reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+  }
+  
+  /* Main Settings container */
+  .settings {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .settings__title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  
+  /* Sections within the settings */
+  .settings__section {
+    margin-bottom: 2rem;
+  }
+  
+  .settings__section-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Theme toggle (Dark/Light) */
+  .settings__theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .settings__theme-icon {
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .settings__switch {
+    width: 50px;
+    height: 26px;
+    background-color: #ccc;
+    border-radius: 50px;
+    cursor: pointer;
+    position: relative;
+  }
+  
+  .settings__slider {
+    width: 24px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    position: absolute;
+    top: 1px;
+    transition: transform 0.3s ease;
+  }
+  
+  .settings__slider--dark {
+    transform: translateX(24px);
+    background-color: #007bff;
+  }
+  
+  .settings__slider--light {
+    background-color: #fff;
+  }
+  
+  .settings__checkbox-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+  }
+  
+  .settings__checkbox-label input {
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Buttons */
+  .settings__delete-btn,
+  .settings__legal-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff4d4d;
+    color: white;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .settings__delete-btn:hover,
+  .settings__legal-btn:hover {
+    background-color: #e63946;
+  }
+  
+  .settings__error {
+    color: #ff4d4d;
+    font-size: 0.875rem;
+    margin-top: 10px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .settings {
+      padding: 1.5rem;
+    }
+  
+    .settings__title {
+      font-size: 1.5rem;
+    }
+  
+    .settings__section-title {
+      font-size: 1.125rem;
+    }
+  }
+  

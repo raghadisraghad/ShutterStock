@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    environment:
+      - MONGO_URI=mongodb+srv://secondUser:secondUser@shut.fbd0i.mongodb.net/?retryWrites=true&w=majority&appName=Shut
+      - UPLOAD_DIRECTORY=C:/Users/ragha/Downloads/ShutterStock Project/Pictures
+      - VITE_FRONTEND_URL=http://localhost:3000
+      - VITE_ORIGIN=http://backend:5000
+      - PORT=5000
+      - SECRET_KEY=shutterStock
+      - NODE_ENV=development
+    ports:
+      - "5000:5000"
+    networks:
+      - mern-network
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    command: npm run dev -- --host
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - mern-network
+
+networks:
+  mern-network:
+    driver: bridge

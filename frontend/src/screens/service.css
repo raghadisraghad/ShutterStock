@@ -1,0 +1,277 @@
+/* Profile Page Container */
+.profile-page-container {
+    font-family: 'Poppins', sans-serif; /* Updated font */
+    background-color: #f7f7f7; /* Light gray background for a clean look */
+    padding: 20px 16px;
+    box-sizing: border-box;
+    color: #333; /* Text color */
+  }
+  
+
+
+
+  /* Profile Details Container */
+  .profile-details-container {
+    padding: 0 20px;
+    margin-top: 50px; /* Adjust for avatar overlap */
+  }
+  
+  /* Vendor Name */
+  .vendor-name-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .vendor-name {
+    font-size: 30px;
+    font-weight: 700;
+    color: #2C3E50; /* Dark blue-gray for the name */
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+  
+  /* Contact Information */
+  .contact-info-container {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .contact-left-column {
+    width: 50%;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .contact-link {
+    display: flex;
+    align-items: center;
+    color: #2C3E50; /* Dark blue-gray for links */
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .contact-link:hover {
+    color: #007bff; /* Blue on hover for better interactivity */
+  }
+  
+  .contact-text {
+    margin-left: 8px;
+    font-size: 16px;
+    color: #555; /* Lighter text color for details */
+  }
+  
+  /* Social Media Links */
+  .social-media-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 40%;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .social-media-icon {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out, color 0.3s ease;
+  }
+  
+  .social-media-icon:hover {
+    transform: scale(1.2);
+  }
+  
+  /* Social Media Icons */
+  .instagram { color: #E4405F; }
+  .linkedin { color: #0077B5; }
+  .facebook { color: #3B5998; }
+  .twitter { color: #1DA1F2; }
+  .youtube { color: #FF0000; }
+  .website { color: #34b7f1; }
+  
+  /* Materials Section */
+  .materials-section {
+    margin-top: 30px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .materials-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+  }
+  
+  .material-item {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+  }
+  
+  .material-item:hover {
+    transform: scale(1.05); /* Slight zoom on hover for emphasis */
+  }
+  
+  /* Service Title and Description */
+  .service-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #2C3E50; /* Dark blue-gray for the title */
+    margin-top: 40px;
+    font-family: 'Montserrat', sans-serif; /* Clean, professional font */
+    text-transform: capitalize;
+  }
+  
+  .service-description {
+    font-size: 16px;
+    color: #777; /* Lighter gray for the description */
+    margin-top: 10px;
+    line-height: 1.6;
+    font-family: 'Roboto', sans-serif; /* Readable description font */
+  }
+  
+  /* Works Gallery */
+  .works-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 50px;
+  }
+  
+  .works-gallery-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .work-card {
+    width: 300px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .work-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+  }
+  
+  .work-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .work-card-body {
+    padding: 10px;
+  }
+  
+  .work-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .work-description {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  /* Button Styles (optional) */
+  button {
+    background-color: #33cc66;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+
+  /* Materials Section */
+.materials-section {
+    margin-top: 30px;
+  }
+  
+  .section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+  }
+  
+  .materials-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .material-item {
+    display: inline-block;
+    margin-bottom: 15px;
+  }
+  
+  .material-bubble {
+    background-color: #007bff; /* Blue background for bubbles */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* Rounded bubble shape */
+    cursor: pointer;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    text-transform: capitalize;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .material-bubble:hover {
+    background-color: #0056b3; /* Darker blue when hovered */
+    transform: scale(1.1); /* Slight enlargement on hover */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+  }
+  
+  /* Optional: Adding a smooth transition effect when the page loads */
+  .material-bubble {
+    opacity: 0;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+
+
+  

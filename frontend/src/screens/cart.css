@@ -1,0 +1,163 @@
+/* General Profile Container Styling */
+.unique-profile-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 30px;
+  min-height: 100vh;
+  gap: 30px;
+}
+
+.unique-form-content {
+  flex: 1;
+}
+
+.unique-form-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  flex-grow: 1;
+  border: 1px solid #ccc;
+}
+
+.unique-form-container:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+
+.unique-section-title {
+  font-size: 1.8rem;
+  color: #444;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+/* Sexy Table Design */
+.unique-order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.unique-order-table th,
+.unique-order-table td {
+  padding: 14px;
+  text-align: left;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.unique-order-table th {
+  background-color: #f4f4f4;
+  color: #555;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.unique-order-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.unique-order-table tr:hover {
+  background-color: #f1f1f1;
+  transform: translateY(-2px);
+}
+
+.unique-product-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.unique-checkbox {
+  cursor: pointer;
+}
+
+.unique-remove-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  color: #e74c3c;
+  transition: transform 0.2s ease, color 0.3s ease;
+}
+
+.unique-remove-btn:hover {
+  transform: scale(1.1);
+  color: #c0392b;
+}
+
+.unique-remove-btn:active {
+  transform: scale(0.95);
+}
+
+/* Payment Summary Container */
+.unique-payment-summary-container {
+  max-width: 400px;
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+  flex-grow: 1;
+  border: 1px solid #ccc;
+}
+
+.unique-payment-summary-container:hover {
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.unique-payment-btn {
+  width: 100%;
+  padding: 15px 0;
+  background-color: #27ae60;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.unique-payment-btn.unique-cancel-btn {
+  background-color: #e67e22;
+}
+
+.unique-payment-btn:disabled {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.unique-payment-btn:hover {
+  background-color: #2ecc71;
+}
+
+.unique-payment-btn.unique-cancel-btn:hover {
+  background-color: #f39c12;
+}
+
+.unique-payment-btn:active {
+  transform: scale(0.98);
+}
+
+.unique-summary-table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+.unique-summary-table td {
+  padding: 12px;
+  text-align: left;
+  font-size: 1rem;
+}
+
+.unique-summary-table tr:nth-child(even) {
+  background-color: #fafafa;
+}

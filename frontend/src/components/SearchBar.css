@@ -1,0 +1,145 @@
+/* Container for the entire search bar and category selector */
+.moroccan-search-bar-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  background: transparent;
+  border-radius: 50px; /* Smooth corners */
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  transition: box-shadow 0.3s ease; /* Smooth transition for hover effect */
+}
+
+/* Search Form */
+.moroccan-search-bar-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+}
+
+/* Search Input */
+.moroccan-search-input {
+  width: 80%;
+  padding: 18px 30px;
+  padding-left: 50px; /* Space for category icons */
+  padding-right: 50px; /* Space for the sign icon (right arrow) */
+  border-radius: 50px;
+  font-size: 20px;
+  color: #f0f0f0; /* Lighter color for the text inside input */
+  background-color: rgba(255, 255, 255, 0.1); /* Light transparent background */
+  border: none;
+  transition: all 0.3s ease;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Elegant font */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Soft shadow */
+}
+
+/* Placeholder text color */
+.moroccan-search-input::placeholder {
+  color: #ffffff; /* White color for the placeholder text */
+  opacity: 0.3; /* Slight transparency for the placeholder */
+}
+
+/* Search Input Focus */
+.moroccan-search-input:focus {
+  border: none;
+  box-shadow: 0 0 15px rgba(51, 204, 102, 0.4); /* Green glow effect on focus */
+  outline: none;
+}
+
+/* Search Button (right arrow icon) */
+.moroccan-search-icon {
+  position: absolute;
+  right: 15px;
+  font-size: 28px;
+  color: #d1d1d1; /* Light grey color for the unselected icon */
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  background: none;
+  border: none;
+}
+
+/* Hover effect on the right arrow icon */
+.moroccan-search-icon:hover {
+  transform: scale(1.6);
+  color: #33cc66; /* Green color on hover */
+}
+
+/* Category Icons Container */
+.moroccan-category-icons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  transition: all 0.3s ease;
+}
+
+/* Individual Category Icon */
+.moroccan-category-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px;
+  cursor: pointer;
+  transition: transform 0.3s ease, color 0.3s ease;
+  position: relative;
+}
+
+/* Default state of category icons */
+.moroccan-category-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #d1d1d1; /* Light grey color for unselected category icons */
+  transition: all 0.3s ease;
+}
+
+/* Hover effect on category icons */
+.moroccan-category-icon:hover svg {
+  transform: scale(1.1);
+  color: #33cc66; /* Green color on hover */
+}
+
+/* Active (selected) category icon style */
+.moroccan-category-icon.active svg {
+  color: #fff;
+  background-color: #33cc66; /* Bold green background for active category */
+  border-radius: 50%;
+  padding: 12px;
+  transform: scale(1.1);
+}
+
+/* Animations for category icons */
+.moroccan-category-icon svg {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.moroccan-category-icon:hover svg {
+  transform: rotate(10deg) scale(1.4); /* Add a rotating effect on hover */
+}
+
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+  .moroccan-search-bar-container {
+    padding: 20px;
+  }
+
+  .moroccan-search-input {
+    width: 100%;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  .moroccan-category-icons {
+    flex-wrap: wrap;
+    margin-top: 15px;
+  }
+
+  .moroccan-category-icon {
+    margin: 10px;
+  }
+}
